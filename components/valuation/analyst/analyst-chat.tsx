@@ -131,7 +131,7 @@ export function AnalystChat() {
         )}
 
         {isBusy ? (
-          <div role="status" className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+          <div role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
             <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
             Analyst is thinking…
           </div>
@@ -195,20 +195,20 @@ function AnalystMessage({
         case "input-streaming":
         case "input-available":
           return (
-            <p key={index} className="font-mono text-xs text-muted-foreground">
+            <p key={index} className="text-xs text-muted-foreground">
               Recalculating with {describeOverrides(part.input ?? {})}…
             </p>
           );
         case "output-available":
           return part.output.ok ? (
-            <p key={index} className="font-mono text-xs text-brand-accent">
+            <p key={index} className="text-xs text-brand-accent">
               Recalculated with {describeOverrides(part.input ?? {})}.
             </p>
           ) : (
             <p
               key={index}
               role="alert"
-              className="rounded-sm border border-destructive/30 bg-destructive/5 px-2 py-1 font-mono text-xs text-destructive"
+              className="rounded-sm border border-destructive/30 bg-destructive/5 px-2 py-1 text-xs text-destructive"
             >
               Couldn&rsquo;t recalculate: {part.output.error}
             </p>
@@ -218,7 +218,7 @@ function AnalystMessage({
             <p
               key={index}
               role="alert"
-              className="rounded-sm border border-destructive/30 bg-destructive/5 px-2 py-1 font-mono text-xs text-destructive"
+              className="rounded-sm border border-destructive/30 bg-destructive/5 px-2 py-1 text-xs text-destructive"
             >
               Couldn&rsquo;t recalculate: {part.errorText}
             </p>
@@ -233,11 +233,11 @@ function AnalystMessage({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="font-mono text-[11px] tracking-widest text-muted-foreground uppercase">{roleLabel}</p>
+      <p className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">{roleLabel}</p>
       <div className="flex flex-col gap-2">{parts}</div>
       {citedKeys.size > 0 && modelState ? (
         <details className="mt-1">
-          <summary className="cursor-pointer rounded-sm font-mono text-[11px] tracking-wide text-muted-foreground uppercase outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <summary className="cursor-pointer rounded-sm text-[11px] font-medium tracking-wide text-muted-foreground uppercase outline-none focus-visible:ring-2 focus-visible:ring-ring">
             Referenced in this answer ({citedKeys.size})
           </summary>
           <ul className="mt-2 flex flex-wrap gap-1.5">

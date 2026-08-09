@@ -4,6 +4,7 @@ import { useValuationWorkspace } from "@/lib/featured/ValuationWorkspaceContext"
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { ScenarioComparisonChart } from "@/components/charts/scenario-comparison-chart";
 import { ConceptInfo } from "@/components/valuation/concept-info";
+import { Reveal } from "@/components/valuation/reveal";
 import { DEFAULT_BEAR_DELTAS, DEFAULT_BULL_DELTAS } from "@/lib/engine";
 
 export function ScenariosTab() {
@@ -13,8 +14,8 @@ export function ScenariosTab() {
     return (
       <div className="flex flex-col gap-6">
         <div>
-          <p className="font-mono text-xs text-muted-foreground">05 — Scenarios</p>
-          <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">Scenarios</h1>
+          <p className="text-xs font-medium tracking-wide text-muted-foreground">05 — Scenarios</p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Scenarios</h1>
         </div>
         <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
           {modelError ?? "Could not compute scenarios with the current assumptions."}
@@ -54,9 +55,9 @@ export function ScenariosTab() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="font-mono text-xs text-muted-foreground">05 — Scenarios</p>
+        <p className="text-xs font-medium tracking-wide text-muted-foreground">05 — Scenarios</p>
         <div className="mt-1 flex items-center gap-2">
-          <h1 className="font-display text-2xl font-medium sm:text-3xl">Scenarios</h1>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Scenarios</h1>
           <ConceptInfo concept="scenarios" />
         </div>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
@@ -65,36 +66,38 @@ export function ScenariosTab() {
         </p>
       </div>
 
-      <ScenarioComparisonChart data={chartData} />
+      <Reveal delay={0.1} className="flex flex-col gap-8">
+        <ScenarioComparisonChart data={chartData} />
 
-      <div className="overflow-x-auto rounded-md border border-border">
-        <table className="w-full min-w-[480px] text-sm">
-          <thead>
-            <tr className="border-b border-border bg-card text-left">
-              <th className="px-3 py-2 font-medium">Assumption</th>
-              <th className="px-3 py-2 text-right font-mono font-medium">Bear</th>
-              <th className="px-3 py-2 text-right font-mono font-medium">Base</th>
-              <th className="px-3 py-2 text-right font-mono font-medium">Bull</th>
-            </tr>
-          </thead>
-          <tbody className="tabular-nums">
-            {rows.map((row) => (
-              <tr key={row.label} className="border-b border-border last:border-0">
-                <td className="px-3 py-2 text-muted-foreground">{row.label}</td>
-                <td className="px-3 py-2 text-right font-mono">{formatPercent(row.bear)}</td>
-                <td className="px-3 py-2 text-right font-mono">{formatPercent(row.base)}</td>
-                <td className="px-3 py-2 text-right font-mono">{formatPercent(row.bull)}</td>
+        <div className="overflow-x-auto rounded-md border border-border">
+          <table className="w-full min-w-[480px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-card text-left">
+                <th className="px-3 py-2 font-medium">Assumption</th>
+                <th className="px-3 py-2 text-right font-medium">Bear</th>
+                <th className="px-3 py-2 text-right font-medium">Base</th>
+                <th className="px-3 py-2 text-right font-medium">Bull</th>
               </tr>
-            ))}
-            <tr>
-              <td className="px-3 py-2 font-medium">Implied share price</td>
-              <td className="px-3 py-2 text-right font-mono font-medium">{formatCurrency(scenarios.bear.impliedSharePrice)}</td>
-              <td className="px-3 py-2 text-right font-mono font-medium">{formatCurrency(scenarios.base.impliedSharePrice)}</td>
-              <td className="px-3 py-2 text-right font-mono font-medium">{formatCurrency(scenarios.bull.impliedSharePrice)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="tabular-nums">
+              {rows.map((row) => (
+                <tr key={row.label} className="border-b border-border last:border-0">
+                  <td className="px-3 py-2 text-muted-foreground">{row.label}</td>
+                  <td className="px-3 py-2 text-right">{formatPercent(row.bear)}</td>
+                  <td className="px-3 py-2 text-right">{formatPercent(row.base)}</td>
+                  <td className="px-3 py-2 text-right">{formatPercent(row.bull)}</td>
+                </tr>
+              ))}
+              <tr>
+                <td className="px-3 py-2 font-medium">Implied share price</td>
+                <td className="px-3 py-2 text-right font-medium">{formatCurrency(scenarios.bear.impliedSharePrice)}</td>
+                <td className="px-3 py-2 text-right font-medium">{formatCurrency(scenarios.base.impliedSharePrice)}</td>
+                <td className="px-3 py-2 text-right font-medium">{formatCurrency(scenarios.bull.impliedSharePrice)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Reveal>
     </div>
   );
 }

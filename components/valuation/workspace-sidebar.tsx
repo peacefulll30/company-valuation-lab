@@ -46,10 +46,17 @@ export function WorkspaceSidebar({ className, onNavigate, variant = "full", indi
           return (
             <li key={section.slug} className="relative">
               {isActive ? (
+                <motion.div
+                  layoutId={`workspace-sidebar-bg-${scope}`}
+                  className="absolute inset-0.5 rounded-sm bg-accent/70"
+                  transition={{ type: "spring", stiffness: 280, damping: 30 }}
+                />
+              ) : null}
+              {isActive ? (
                 <motion.span
                   layoutId={`workspace-sidebar-indicator-${scope}`}
-                  className="absolute inset-y-1 left-0 w-0.5 rounded-full bg-brand-accent shadow-[0_0_10px_var(--brand-glow)]"
-                  transition={{ type: "spring", stiffness: 400, damping: 38 }}
+                  className="absolute inset-y-1 left-0 z-10 w-0.5 rounded-full bg-brand-accent shadow-[0_0_10px_var(--brand-glow)]"
+                  transition={{ type: "spring", stiffness: 320, damping: 32 }}
                 />
               ) : null}
               <button
@@ -61,25 +68,24 @@ export function WorkspaceSidebar({ className, onNavigate, variant = "full", indi
                 aria-current={isActive ? "true" : undefined}
                 title={isIcon ? section.label : undefined}
                 className={cn(
-                  "flex w-full items-center gap-3 border-l-2 border-transparent px-4 py-2.5 text-sm outline-none transition-colors duration-200",
-                  "hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
-                  isIcon && "justify-center px-2",
-                  isActive && "bg-accent/60"
+                  "relative z-10 flex w-full items-center gap-3 border-l-2 border-transparent px-4 py-2.5 text-sm outline-none transition-colors duration-300",
+                  "hover:bg-accent/40 focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+                  isIcon && "justify-center px-2"
                 )}
               >
                 <span
                   className={cn(
-                    "font-mono text-xs tabular-nums transition-colors duration-200",
-                    isActive ? "text-brand-accent" : isPassed ? "text-brand-accent/45" : "text-muted-foreground"
+                    "text-xs tabular-nums transition-colors duration-300",
+                    isActive ? "font-semibold text-brand-accent" : isPassed ? "text-brand-accent/45" : "text-muted-foreground"
                   )}
                 >
                   {section.step}
                 </span>
                 <span
                   className={cn(
-                    "transition-colors duration-200",
+                    "transition-colors duration-300",
                     isIcon && "sr-only",
-                    isActive ? "font-medium text-foreground" : isPassed ? "text-foreground/65" : "text-muted-foreground"
+                    isActive ? "font-semibold text-foreground" : isPassed ? "text-foreground/65" : "text-muted-foreground"
                   )}
                 >
                   {section.label}

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HistoricalVsForecastChart } from "@/components/charts/historical-vs-forecast-chart";
 import { ConceptInfo } from "@/components/valuation/concept-info";
+import { Reveal } from "@/components/valuation/reveal";
 import { FORECAST_YEARS } from "@/lib/engine";
 import { formatPercent } from "@/lib/format";
 
@@ -29,9 +30,9 @@ export function ForecastTab() {
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="font-mono text-xs text-muted-foreground">03 — Forecast</p>
+          <p className="text-xs font-medium tracking-wide text-muted-foreground">03 — Forecast</p>
           <div className="mt-1 flex items-center gap-2">
-            <h1 className="font-display text-2xl font-medium sm:text-3xl">Forecast</h1>
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Forecast</h1>
             <ConceptInfo concept="forecast" />
           </div>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
@@ -54,7 +55,7 @@ export function ForecastTab() {
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.2fr]">
+      <Reveal delay={0.1} className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.2fr]">
         <div className="flex flex-col gap-6">
           <AssumptionInput
             label="Revenue growth"
@@ -103,7 +104,7 @@ export function ForecastTab() {
               <span>
                 Advanced: margin trajectory, CapEx &amp; working capital, mid-year discounting
               </span>
-              <span className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground uppercase">
+              <span className="rounded-sm bg-muted px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
                 Advanced
               </span>
             </summary>
@@ -123,7 +124,7 @@ export function ForecastTab() {
                       advanced: { ...prev.advanced, daPctRevenue: Number.isFinite(v) ? v / 100 : undefined },
                     }));
                   }}
-                  className="h-8 w-32 font-mono text-sm"
+                  className="h-8 w-32 text-sm tabular-nums"
                 />
               </label>
               <label className="flex flex-col gap-1 text-sm">
@@ -141,7 +142,7 @@ export function ForecastTab() {
                       advanced: { ...prev.advanced, capexPctRevenue: Number.isFinite(v) ? v / 100 : undefined },
                     }));
                   }}
-                  className="h-8 w-32 font-mono text-sm"
+                  className="h-8 w-32 text-sm tabular-nums"
                 />
               </label>
               <label className="flex items-center gap-2 text-sm">
@@ -165,7 +166,7 @@ export function ForecastTab() {
         <div>
           <HistoricalVsForecastChart data={[...historicalPoints, ...forecastPoints]} />
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 }

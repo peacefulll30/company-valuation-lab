@@ -25,17 +25,17 @@ export function CompanyContextHeader({ companySlug, data }: CompanyContextHeader
           {data ? (
             <>
               <span className="hidden text-sm text-muted-foreground sm:inline">{data.name}</span>
-              <Badge variant="secondary" className="font-mono text-[10px] tracking-wide uppercase">
+              <Badge variant="secondary" className="text-[10px] font-medium tracking-wide uppercase">
                 {data.tier === "featured" ? "Featured" : "Searched"}
               </Badge>
             </>
           ) : (
-            <Badge variant="outline" className="font-mono text-[10px] tracking-wide uppercase">
+            <Badge variant="outline" className="text-[10px] font-medium tracking-wide uppercase">
               Not yet resolved
             </Badge>
           )}
         </div>
-        <p className="font-mono text-xs text-muted-foreground">Price unavailable</p>
+        <p className="text-xs text-muted-foreground">Price unavailable</p>
       </Container>
     </div>
   );

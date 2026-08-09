@@ -50,9 +50,9 @@ export function CompanyUnavailable({
       <main id="main-content" className="flex-1 py-16">
         <Container className="max-w-xl">
           <p className="font-mono text-xs tracking-wide text-muted-foreground uppercase">{companySlug}</p>
-          <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">{copy.title}</h1>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">{copy.title}</h1>
           <p className="mt-3 text-sm text-muted-foreground">{copy.body}</p>
-          <p role="status" className="mt-2 font-mono text-xs text-muted-foreground">
+          <p role="status" className="mt-2 text-xs text-muted-foreground">
             {reason}
           </p>
           <Link

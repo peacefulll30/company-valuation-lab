@@ -63,7 +63,7 @@ export function AssumptionInput({
             max={max * 100}
             value={percentValue}
             onChange={(e) => handlePercentInput(e.target.value)}
-            className="h-7 w-20 text-right font-mono text-sm tabular-nums"
+            className="h-7 w-20 text-right text-sm font-medium tabular-nums"
             aria-describedby={sourceTag ? `${inputId}-source` : undefined}
           />
           <span className="text-sm text-muted-foreground">%</span>

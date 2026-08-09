@@ -44,10 +44,10 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden border-b border-border py-24 sm:py-32 lg:py-36">
+    <section className="relative overflow-hidden border-b border-border py-16 sm:py-20 lg:py-24">
       <AmbientField className="pointer-events-none absolute inset-0 -z-10" />
 
-      <Container className="relative grid grid-cols-1 items-center gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
+      <Container className="relative grid grid-cols-1 items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-10">
         <div className="flex flex-col items-start gap-9">
           <motion.p
             initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
@@ -106,7 +106,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: prefersReducedMotion ? 0.01 : 0.9, delay: prefersReducedMotion ? 0 : 0.4, ease: EASE }}
-          className="relative hidden aspect-[16/9.2] w-full max-w-xl justify-self-center lg:block"
+          className="relative hidden aspect-[27/16] w-full max-w-2xl justify-self-center lg:block"
         >
           <ValuationEngineVisual className="size-full" />
         </motion.div>

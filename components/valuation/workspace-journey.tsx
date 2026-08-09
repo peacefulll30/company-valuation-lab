@@ -90,12 +90,33 @@ function JourneySection({ slug, children }: { slug: WorkspaceSectionSlug; childr
     <motion.section
       id={slug}
       ref={ref}
-      className="scroll-mt-20 border-b border-border py-12 last:border-none sm:py-16"
-      initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+      className="scroll-mt-20 relative border-b border-border py-12 last:border-none sm:py-16"
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
       whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
-      transition={{ duration: 0.55, ease: EASE }}
+      transition={{ duration: 0.6, ease: EASE }}
     >
+      {/* A soft illumination that arrives with the section — the "one continuous story" cue
+          echoing the marketing shell's ambient glow, not a per-section spotlight that would
+          fight the content for attention. */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-10 left-0 -z-10 h-40 w-72 opacity-0"
+        style={{ background: "radial-gradient(circle, var(--brand-glow, var(--brand-accent)) 0%, transparent 72%)" }}
+        initial={prefersReducedMotion ? { opacity: 0.05 } : { opacity: 0 }}
+        whileInView={prefersReducedMotion ? undefined : { opacity: 0.08 }}
+        viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+        transition={{ duration: 1.1, ease: EASE }}
+      />
+      {/* A thin brass rule that draws in above the section — the "arriving" cue for the story. */}
+      <motion.span
+        aria-hidden="true"
+        className="absolute top-0 left-0 h-px w-16 origin-left bg-brand-accent"
+        initial={prefersReducedMotion ? { scaleX: 1 } : { scaleX: 0 }}
+        whileInView={prefersReducedMotion ? undefined : { scaleX: 1 }}
+        viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+        transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
+      />
       {children}
     </motion.section>
   );

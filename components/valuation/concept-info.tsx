@@ -23,7 +23,7 @@ export function ConceptInfo({ concept }: { concept: ConceptKey }) {
         <Info className="size-3.5" aria-hidden="true" />
       </PopoverTrigger>
       <PopoverContent>
-        <p className="font-mono text-[10px] tracking-wide text-muted-foreground uppercase">{label}</p>
+        <p className="text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">{label}</p>
         <p className="mt-1.5 text-sm leading-relaxed text-popover-foreground">{summary}</p>
       </PopoverContent>
     </Popover>

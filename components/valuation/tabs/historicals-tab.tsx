@@ -6,6 +6,7 @@ import { RevenueEbitdaChart } from "@/components/charts/revenue-ebitda-chart";
 import { MarginTrendChart } from "@/components/charts/margin-trend-chart";
 import { FcfChart } from "@/components/charts/fcf-chart";
 import { ConceptInfo } from "@/components/valuation/concept-info";
+import { Reveal } from "@/components/valuation/reveal";
 import type { FinancialLineItems } from "@/lib/engine/types";
 
 function SourcedCell({ value, item }: { value: number; item: { source: string; asOf: string } }) {
@@ -47,8 +48,8 @@ export function HistoricalsTab() {
     return (
       <div className="flex flex-col gap-6">
         <div>
-          <p className="font-mono text-xs text-muted-foreground">02 — Historical Financials</p>
-          <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">Historical Financials</h1>
+          <p className="text-xs font-medium tracking-wide text-muted-foreground">02 — Historical Financials</p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">Historical Financials</h1>
         </div>
         <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
           {modelError ?? "Could not compute derived historical metrics with the current assumptions."}
@@ -78,9 +79,9 @@ export function HistoricalsTab() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="font-mono text-xs text-muted-foreground">02 — Historical Financials</p>
+        <p className="text-xs font-medium tracking-wide text-muted-foreground">02 — Historical Financials</p>
         <div className="mt-1 flex items-center gap-2">
-          <h1 className="font-display text-2xl font-medium sm:text-3xl">Historical Financials</h1>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Historical Financials</h1>
           <ConceptInfo concept="historicals" />
         </div>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
@@ -89,70 +90,72 @@ export function HistoricalsTab() {
         </p>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-border">
-        <table className="w-full min-w-[640px] text-sm">
-          <thead>
-            <tr className="border-b border-border bg-card text-left">
-              <th className="px-3 py-2 font-medium">Line item</th>
-              {historicals.map((h) => (
-                <th key={h.fiscalYear} className="px-3 py-2 text-right font-mono font-medium">
-                  FY{h.fiscalYear}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="tabular-nums">
-            {ROWS.map((row) => (
-              <tr key={row.key} className="border-b border-border last:border-0">
-                <td className="px-3 py-2 text-muted-foreground">{row.label}</td>
-                {historicals.map((h) => {
-                  const item = h[row.key] as { value: number; source: string; asOf: string };
-                  return (
-                    <td key={h.fiscalYear} className="px-3 py-2 text-right font-mono">
-                      <SourcedCell value={item.value} item={item} />
-                    </td>
-                  );
-                })}
+      <Reveal delay={0.1} className="flex flex-col gap-8">
+        <div className="overflow-x-auto rounded-md border border-border">
+          <table className="w-full min-w-[640px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-card text-left">
+                <th className="px-3 py-2 font-medium">Line item</th>
+                {historicals.map((h) => (
+                  <th key={h.fiscalYear} className="px-3 py-2 text-right font-mono font-medium">
+                    FY{h.fiscalYear}
+                  </th>
+                ))}
               </tr>
-            ))}
-            <tr className="border-b border-border bg-accent/40 last:border-0">
-              <td className="px-3 py-2 font-medium">
-                EBITDA{" "}
-                <span className="ml-1 rounded-sm bg-muted px-1 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground uppercase">
-                  derived
-                </span>
-              </td>
-              {metrics.map((m) => (
-                <td key={m.fiscalYear} className="px-3 py-2 text-right font-mono font-medium">
-                  {formatCompactCurrency(m.ebitda)}
-                </td>
+            </thead>
+            <tbody className="tabular-nums">
+              {ROWS.map((row) => (
+                <tr key={row.key} className="border-b border-border last:border-0">
+                  <td className="px-3 py-2 text-muted-foreground">{row.label}</td>
+                  {historicals.map((h) => {
+                    const item = h[row.key] as { value: number; source: string; asOf: string };
+                    return (
+                      <td key={h.fiscalYear} className="px-3 py-2 text-right">
+                        <SourcedCell value={item.value} item={item} />
+                      </td>
+                    );
+                  })}
+                </tr>
               ))}
-            </tr>
-            <tr className="border-b border-border last:border-0">
-              <td className="px-3 py-2 text-muted-foreground">Revenue growth</td>
-              {metrics.map((m) => (
-                <td key={m.fiscalYear} className="px-3 py-2 text-right font-mono">
-                  {m.revenueGrowth !== null ? formatPercent(m.revenueGrowth) : "—"}
+              <tr className="border-b border-border bg-accent/40 last:border-0">
+                <td className="px-3 py-2 font-medium">
+                  EBITDA{" "}
+                  <span className="ml-1 rounded-sm bg-muted px-1 py-0.5 text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
+                    derived
+                  </span>
                 </td>
-              ))}
-            </tr>
-            <tr className="last:border-0">
-              <td className="px-3 py-2 text-muted-foreground">EBITDA margin</td>
-              {metrics.map((m) => (
-                <td key={m.fiscalYear} className="px-3 py-2 text-right font-mono">
-                  {m.ebitdaMargin !== null ? formatPercent(m.ebitdaMargin) : "—"}
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                {metrics.map((m) => (
+                  <td key={m.fiscalYear} className="px-3 py-2 text-right font-medium">
+                    {formatCompactCurrency(m.ebitda)}
+                  </td>
+                ))}
+              </tr>
+              <tr className="border-b border-border last:border-0">
+                <td className="px-3 py-2 text-muted-foreground">Revenue growth</td>
+                {metrics.map((m) => (
+                  <td key={m.fiscalYear} className="px-3 py-2 text-right">
+                    {m.revenueGrowth !== null ? formatPercent(m.revenueGrowth) : "—"}
+                  </td>
+                ))}
+              </tr>
+              <tr className="last:border-0">
+                <td className="px-3 py-2 text-muted-foreground">EBITDA margin</td>
+                {metrics.map((m) => (
+                  <td key={m.fiscalYear} className="px-3 py-2 text-right">
+                    {m.ebitdaMargin !== null ? formatPercent(m.ebitdaMargin) : "—"}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <RevenueEbitdaChart data={revenueEbitdaData} />
-        <MarginTrendChart data={marginData} />
-        <FcfChart data={fcfData} />
-      </div>
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+          <RevenueEbitdaChart data={revenueEbitdaData} />
+          <MarginTrendChart data={marginData} />
+          <FcfChart data={fcfData} />
+        </div>
+      </Reveal>
     </div>
   );
 }

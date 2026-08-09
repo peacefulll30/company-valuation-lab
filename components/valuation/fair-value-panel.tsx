@@ -29,12 +29,12 @@ export function FairValuePanel({ className, variant = "sidebar", data }: FairVal
   if (variant === "bar") {
     return (
       <div className={cn("flex items-center justify-between gap-3 px-4 py-2.5", className)}>
-        <p className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
+        <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
           Fair value
         </p>
         <div className="flex items-center gap-2.5">
           <RangeBracket width={48} tickHeight={7} className={bracketClass} />
-          <p className={cn("font-display text-base", valueClass)}>
+          <p className={cn("text-base font-semibold tabular-nums", valueClass)}>
             {data ? formatCurrency(data.base) : "Not yet calculated"}
           </p>
         </div>
@@ -44,14 +44,14 @@ export function FairValuePanel({ className, variant = "sidebar", data }: FairVal
 
   return (
     <div className={cn("p-4", className)}>
-      <p className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
+      <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
         Fair value
       </p>
-      <p className={cn("mt-1 font-display text-2xl", valueClass)}>
+      <p className={cn("mt-1 text-2xl font-semibold tracking-tight tabular-nums", valueClass)}>
         {data ? formatCurrency(data.base) : "Not yet calculated"}
       </p>
       {data ? (
-        <p className="mt-1 font-mono text-xs text-muted-foreground tabular-nums">
+        <p className="mt-1 text-xs text-muted-foreground tabular-nums">
           {formatCurrency(data.low)}&ndash;{formatCurrency(data.high)}
         </p>
       ) : null}
