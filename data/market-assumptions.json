@@ -1,0 +1,27 @@
+{
+  "riskFreeRate": {
+    "value": 0.0465,
+    "source": "U.S. Department of the Treasury — Daily Treasury Par Yield Curve Rates, 10-Year",
+    "asOf": "2026-08-07"
+  },
+  "equityRiskPremium": {
+    "value": 0.055,
+    "source": "Illustrative long-run historical U.S. equity risk premium (arithmetic average, large-cap equities over long-term Treasury bonds — standard textbook/practitioner reference range). Not a live feed.",
+    "asOf": "2026-08-08"
+  },
+  "costOfDebtSpread": {
+    "value": 0.01,
+    "source": "Illustrative investment-grade (single-A) credit spread assumption over the risk-free rate (standard practitioner reference range). Not a live feed; combined with riskFreeRate to form a default pre-tax cost of debt where no company-specific bond yield is sourced.",
+    "asOf": "2026-08-08"
+  },
+  "defaultTerminalGrowth": {
+    "value": 0.025,
+    "source": "Illustrative long-run nominal GDP growth proxy (standard DCF terminal-growth convention). Not a live feed.",
+    "asOf": "2026-08-08"
+  },
+  "defaultBeta": {
+    "value": 1.0,
+    "source": "Market-average proxy (beta = 1.0) — no per-company beta has been sourced from a reliable provider yet. See project blockers.",
+    "asOf": "2026-08-08"
+  }
+}

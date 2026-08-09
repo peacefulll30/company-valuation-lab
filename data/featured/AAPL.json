@@ -1,0 +1,805 @@
+{
+  "meta": {
+    "ticker": "AAPL",
+    "cik": "0000320193",
+    "name": "Apple Inc.",
+    "sector": "Electronic Computers",
+    "sicCode": "3571",
+    "description": "Apple Inc. — SIC 3571 (Electronic Computers)",
+    "tier": "featured",
+    "peerTickers": []
+  },
+  "financials": {
+    "historicals": [
+      {
+        "fiscalYear": 2021,
+        "revenue": {
+          "value": 365817000000,
+          "source": "SEC EDGAR 10-K (RevenueFromContractWithCustomerExcludingAssessedTax, accn 0000320193-23-000106)",
+          "asOf": "2021-09-25"
+        },
+        "ebit": {
+          "value": 108949000000,
+          "source": "SEC EDGAR 10-K (OperatingIncomeLoss, accn 0000320193-23-000106)",
+          "asOf": "2021-09-25"
+        },
+        "da": {
+          "value": 11284000000,
+          "source": "SEC EDGAR 10-K (DepreciationDepletionAndAmortization, accn 0000320193-23-000106)",
+          "asOf": "2021-09-25"
+        },
+        "taxRate": {
+          "value": 0.13302260844085087,
+          "source": "SEC EDGAR 10-K (IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)",
+          "asOf": "2021-09-25"
+        },
+        "netIncome": {
+          "value": 94680000000,
+          "source": "SEC EDGAR 10-K (NetIncomeLoss, accn 0000320193-23-000106)",
+          "asOf": "2021-09-25"
+        },
+        "cash": {
+          "value": 34940000000,
+          "source": "SEC EDGAR 10-K (CashAndCashEquivalentsAtCarryingValue, accn 0000320193-22-000108)",
+          "asOf": "2021-09-25"
+        },
+        "totalDebt": {
+          "value": 124719000000,
+          "source": "SEC EDGAR 10-K (LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper composite)",
+          "asOf": "2021-09-25"
+        },
+        "dilutedShares": {
+          "value": 16864919000,
+          "source": "SEC EDGAR 10-K (WeightedAverageNumberOfDilutedSharesOutstanding, accn 0000320193-23-000106)",
+          "asOf": "2021-09-25"
+        },
+        "operatingCashFlow": {
+          "value": 104038000000,
+          "source": "SEC EDGAR 10-K (NetCashProvidedByUsedInOperatingActivities, accn 0000320193-23-000106)",
+          "asOf": "2021-09-25"
+        },
+        "capex": {
+          "value": 11085000000,
+          "source": "SEC EDGAR 10-K (PaymentsToAcquirePropertyPlantAndEquipment, accn 0000320193-23-000106)",
+          "asOf": "2021-09-25"
+        },
+        "deltaNWC": {
+          "value": -10277000000,
+          "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2021-09-25"
+        }
+      },
+      {
+        "fiscalYear": 2022,
+        "revenue": {
+          "value": 394328000000,
+          "source": "SEC EDGAR 10-K (RevenueFromContractWithCustomerExcludingAssessedTax, accn 0000320193-24-000123)",
+          "asOf": "2022-09-24"
+        },
+        "ebit": {
+          "value": 119437000000,
+          "source": "SEC EDGAR 10-K (OperatingIncomeLoss, accn 0000320193-24-000123)",
+          "asOf": "2022-09-24"
+        },
+        "da": {
+          "value": 11104000000,
+          "source": "SEC EDGAR 10-K (DepreciationDepletionAndAmortization, accn 0000320193-24-000123)",
+          "asOf": "2022-09-24"
+        },
+        "taxRate": {
+          "value": 0.16204461684424407,
+          "source": "SEC EDGAR 10-K (IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)",
+          "asOf": "2022-09-24"
+        },
+        "netIncome": {
+          "value": 99803000000,
+          "source": "SEC EDGAR 10-K (NetIncomeLoss, accn 0000320193-24-000123)",
+          "asOf": "2022-09-24"
+        },
+        "cash": {
+          "value": 23646000000,
+          "source": "SEC EDGAR 10-K (CashAndCashEquivalentsAtCarryingValue, accn 0000320193-23-000106)",
+          "asOf": "2022-09-24"
+        },
+        "totalDebt": {
+          "value": 120069000000,
+          "source": "SEC EDGAR 10-K (LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper composite)",
+          "asOf": "2022-09-24"
+        },
+        "dilutedShares": {
+          "value": 16325819000,
+          "source": "SEC EDGAR 10-K (WeightedAverageNumberOfDilutedSharesOutstanding, accn 0000320193-24-000123)",
+          "asOf": "2022-09-24"
+        },
+        "operatingCashFlow": {
+          "value": 122151000000,
+          "source": "SEC EDGAR 10-K (NetCashProvidedByUsedInOperatingActivities, accn 0000320193-24-000123)",
+          "asOf": "2022-09-24"
+        },
+        "capex": {
+          "value": 10708000000,
+          "source": "SEC EDGAR 10-K (PaymentsToAcquirePropertyPlantAndEquipment, accn 0000320193-24-000123)",
+          "asOf": "2022-09-24"
+        },
+        "deltaNWC": {
+          "value": -11141000000,
+          "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2022-09-24"
+        }
+      },
+      {
+        "fiscalYear": 2023,
+        "revenue": {
+          "value": 383285000000,
+          "source": "SEC EDGAR 10-K (RevenueFromContractWithCustomerExcludingAssessedTax, accn 0000320193-25-000079)",
+          "asOf": "2023-09-30"
+        },
+        "ebit": {
+          "value": 114301000000,
+          "source": "SEC EDGAR 10-K (OperatingIncomeLoss, accn 0000320193-25-000079)",
+          "asOf": "2023-09-30"
+        },
+        "da": {
+          "value": 11519000000,
+          "source": "SEC EDGAR 10-K (DepreciationDepletionAndAmortization, accn 0000320193-25-000079)",
+          "asOf": "2023-09-30"
+        },
+        "taxRate": {
+          "value": 0.14719174228036858,
+          "source": "SEC EDGAR 10-K (IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)",
+          "asOf": "2023-09-30"
+        },
+        "netIncome": {
+          "value": 96995000000,
+          "source": "SEC EDGAR 10-K (NetIncomeLoss, accn 0000320193-25-000079)",
+          "asOf": "2023-09-30"
+        },
+        "cash": {
+          "value": 29965000000,
+          "source": "SEC EDGAR 10-K (CashAndCashEquivalentsAtCarryingValue, accn 0000320193-24-000123)",
+          "asOf": "2023-09-30"
+        },
+        "totalDebt": {
+          "value": 111088000000,
+          "source": "SEC EDGAR 10-K (LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper composite)",
+          "asOf": "2023-09-30"
+        },
+        "dilutedShares": {
+          "value": 15812547000,
+          "source": "SEC EDGAR 10-K (WeightedAverageNumberOfDilutedSharesOutstanding, accn 0000320193-25-000079)",
+          "asOf": "2023-09-30"
+        },
+        "operatingCashFlow": {
+          "value": 110543000000,
+          "source": "SEC EDGAR 10-K (NetCashProvidedByUsedInOperatingActivities, accn 0000320193-25-000079)",
+          "asOf": "2023-09-30"
+        },
+        "capex": {
+          "value": 10959000000,
+          "source": "SEC EDGAR 10-K (PaymentsToAcquirePropertyPlantAndEquipment, accn 0000320193-25-000079)",
+          "asOf": "2023-09-30"
+        },
+        "deltaNWC": {
+          "value": 5213000000,
+          "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2023-09-30"
+        }
+      },
+      {
+        "fiscalYear": 2024,
+        "revenue": {
+          "value": 391035000000,
+          "source": "SEC EDGAR 10-K (RevenueFromContractWithCustomerExcludingAssessedTax, accn 0000320193-25-000079)",
+          "asOf": "2024-09-28"
+        },
+        "ebit": {
+          "value": 123216000000,
+          "source": "SEC EDGAR 10-K (OperatingIncomeLoss, accn 0000320193-25-000079)",
+          "asOf": "2024-09-28"
+        },
+        "da": {
+          "value": 11445000000,
+          "source": "SEC EDGAR 10-K (DepreciationDepletionAndAmortization, accn 0000320193-25-000079)",
+          "asOf": "2024-09-28"
+        },
+        "taxRate": {
+          "value": 0.24091185164189982,
+          "source": "SEC EDGAR 10-K (IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)",
+          "asOf": "2024-09-28"
+        },
+        "netIncome": {
+          "value": 93736000000,
+          "source": "SEC EDGAR 10-K (NetIncomeLoss, accn 0000320193-25-000079)",
+          "asOf": "2024-09-28"
+        },
+        "cash": {
+          "value": 29943000000,
+          "source": "SEC EDGAR 10-K (CashAndCashEquivalentsAtCarryingValue, accn 0000320193-25-000079)",
+          "asOf": "2024-09-28"
+        },
+        "totalDebt": {
+          "value": 106629000000,
+          "source": "SEC EDGAR 10-K (LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper composite)",
+          "asOf": "2024-09-28"
+        },
+        "dilutedShares": {
+          "value": 15408095000,
+          "source": "SEC EDGAR 10-K (WeightedAverageNumberOfDilutedSharesOutstanding, accn 0000320193-25-000079)",
+          "asOf": "2024-09-28"
+        },
+        "operatingCashFlow": {
+          "value": 118254000000,
+          "source": "SEC EDGAR 10-K (NetCashProvidedByUsedInOperatingActivities, accn 0000320193-25-000079)",
+          "asOf": "2024-09-28"
+        },
+        "capex": {
+          "value": 9447000000,
+          "source": "SEC EDGAR 10-K (PaymentsToAcquirePropertyPlantAndEquipment, accn 0000320193-25-000079)",
+          "asOf": "2024-09-28"
+        },
+        "deltaNWC": {
+          "value": -16569000000,
+          "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2024-09-28"
+        }
+      },
+      {
+        "fiscalYear": 2025,
+        "revenue": {
+          "value": 416161000000,
+          "source": "SEC EDGAR 10-K (RevenueFromContractWithCustomerExcludingAssessedTax, accn 0000320193-25-000079)",
+          "asOf": "2025-09-27"
+        },
+        "ebit": {
+          "value": 133050000000,
+          "source": "SEC EDGAR 10-K (OperatingIncomeLoss, accn 0000320193-25-000079)",
+          "asOf": "2025-09-27"
+        },
+        "da": {
+          "value": 11698000000,
+          "source": "SEC EDGAR 10-K (DepreciationDepletionAndAmortization, accn 0000320193-25-000079)",
+          "asOf": "2025-09-27"
+        },
+        "taxRate": {
+          "value": 0.15610002335586043,
+          "source": "SEC EDGAR 10-K (IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)",
+          "asOf": "2025-09-27"
+        },
+        "netIncome": {
+          "value": 112010000000,
+          "source": "SEC EDGAR 10-K (NetIncomeLoss, accn 0000320193-25-000079)",
+          "asOf": "2025-09-27"
+        },
+        "cash": {
+          "value": 35934000000,
+          "source": "SEC EDGAR 10-K (CashAndCashEquivalentsAtCarryingValue, accn 0000320193-25-000079)",
+          "asOf": "2025-09-27"
+        },
+        "totalDebt": {
+          "value": 98657000000,
+          "source": "SEC EDGAR 10-K (LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper composite)",
+          "asOf": "2025-09-27"
+        },
+        "dilutedShares": {
+          "value": 15004697000,
+          "source": "SEC EDGAR 10-K (WeightedAverageNumberOfDilutedSharesOutstanding, accn 0000320193-25-000079)",
+          "asOf": "2025-09-27"
+        },
+        "operatingCashFlow": {
+          "value": 111482000000,
+          "source": "SEC EDGAR 10-K (NetCashProvidedByUsedInOperatingActivities, accn 0000320193-25-000079)",
+          "asOf": "2025-09-27"
+        },
+        "capex": {
+          "value": 12715000000,
+          "source": "SEC EDGAR 10-K (PaymentsToAcquirePropertyPlantAndEquipment, accn 0000320193-25-000079)",
+          "asOf": "2025-09-27"
+        },
+        "deltaNWC": {
+          "value": -810000000,
+          "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2025-09-27"
+        }
+      }
+    ],
+    "currentPrice": null
+  },
+  "provenance": [
+    {
+      "field": "revenue",
+      "fiscalYear": 2021,
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "ebit",
+      "fiscalYear": 2021,
+      "tag": "OperatingIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "netIncome",
+      "fiscalYear": 2021,
+      "tag": "NetIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "operatingCashFlow",
+      "fiscalYear": 2021,
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "capex",
+      "fiscalYear": 2021,
+      "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "dilutedShares",
+      "fiscalYear": 2021,
+      "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "da",
+      "fiscalYear": 2021,
+      "tag": "DepreciationDepletionAndAmortization",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "taxRate",
+      "fiscalYear": 2021,
+      "tag": "IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "cash",
+      "fiscalYear": 2021,
+      "tag": "CashAndCashEquivalentsAtCarryingValue",
+      "form": "10-K",
+      "accessionNumber": "0000320193-22-000108",
+      "filingDate": "2022-10-28",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "totalDebt",
+      "fiscalYear": 2021,
+      "tag": "LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper",
+      "form": "10-K",
+      "accessionNumber": "0000320193-22-000108",
+      "filingDate": "2022-10-28",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "deltaNWC",
+      "fiscalYear": 2021,
+      "tag": "AssetsCurrent, LiabilitiesCurrent (derived Δ NWC level)",
+      "form": "10-K",
+      "accessionNumber": "0000320193-22-000108",
+      "filingDate": "2022-10-28",
+      "periodEnd": "2021-09-25"
+    },
+    {
+      "field": "revenue",
+      "fiscalYear": 2022,
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "ebit",
+      "fiscalYear": 2022,
+      "tag": "OperatingIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "netIncome",
+      "fiscalYear": 2022,
+      "tag": "NetIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "operatingCashFlow",
+      "fiscalYear": 2022,
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "capex",
+      "fiscalYear": 2022,
+      "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "dilutedShares",
+      "fiscalYear": 2022,
+      "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "da",
+      "fiscalYear": 2022,
+      "tag": "DepreciationDepletionAndAmortization",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "taxRate",
+      "fiscalYear": 2022,
+      "tag": "IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "cash",
+      "fiscalYear": 2022,
+      "tag": "CashAndCashEquivalentsAtCarryingValue",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "totalDebt",
+      "fiscalYear": 2022,
+      "tag": "LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "deltaNWC",
+      "fiscalYear": 2022,
+      "tag": "AssetsCurrent, LiabilitiesCurrent (derived Δ NWC level)",
+      "form": "10-K",
+      "accessionNumber": "0000320193-23-000106",
+      "filingDate": "2023-11-03",
+      "periodEnd": "2022-09-24"
+    },
+    {
+      "field": "revenue",
+      "fiscalYear": 2023,
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "ebit",
+      "fiscalYear": 2023,
+      "tag": "OperatingIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "netIncome",
+      "fiscalYear": 2023,
+      "tag": "NetIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "operatingCashFlow",
+      "fiscalYear": 2023,
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "capex",
+      "fiscalYear": 2023,
+      "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "dilutedShares",
+      "fiscalYear": 2023,
+      "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "da",
+      "fiscalYear": 2023,
+      "tag": "DepreciationDepletionAndAmortization",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "taxRate",
+      "fiscalYear": 2023,
+      "tag": "IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "cash",
+      "fiscalYear": 2023,
+      "tag": "CashAndCashEquivalentsAtCarryingValue",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "totalDebt",
+      "fiscalYear": 2023,
+      "tag": "LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "deltaNWC",
+      "fiscalYear": 2023,
+      "tag": "AssetsCurrent, LiabilitiesCurrent (derived Δ NWC level)",
+      "form": "10-K",
+      "accessionNumber": "0000320193-24-000123",
+      "filingDate": "2024-11-01",
+      "periodEnd": "2023-09-30"
+    },
+    {
+      "field": "revenue",
+      "fiscalYear": 2024,
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "ebit",
+      "fiscalYear": 2024,
+      "tag": "OperatingIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "netIncome",
+      "fiscalYear": 2024,
+      "tag": "NetIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "operatingCashFlow",
+      "fiscalYear": 2024,
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "capex",
+      "fiscalYear": 2024,
+      "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "dilutedShares",
+      "fiscalYear": 2024,
+      "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "da",
+      "fiscalYear": 2024,
+      "tag": "DepreciationDepletionAndAmortization",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "taxRate",
+      "fiscalYear": 2024,
+      "tag": "IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "cash",
+      "fiscalYear": 2024,
+      "tag": "CashAndCashEquivalentsAtCarryingValue",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "totalDebt",
+      "fiscalYear": 2024,
+      "tag": "LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "deltaNWC",
+      "fiscalYear": 2024,
+      "tag": "AssetsCurrent, LiabilitiesCurrent (derived Δ NWC level)",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2024-09-28"
+    },
+    {
+      "field": "revenue",
+      "fiscalYear": 2025,
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "ebit",
+      "fiscalYear": 2025,
+      "tag": "OperatingIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "netIncome",
+      "fiscalYear": 2025,
+      "tag": "NetIncomeLoss",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "operatingCashFlow",
+      "fiscalYear": 2025,
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "capex",
+      "fiscalYear": 2025,
+      "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "dilutedShares",
+      "fiscalYear": 2025,
+      "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "da",
+      "fiscalYear": 2025,
+      "tag": "DepreciationDepletionAndAmortization",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "taxRate",
+      "fiscalYear": 2025,
+      "tag": "IncomeTaxExpenseBenefit / IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "cash",
+      "fiscalYear": 2025,
+      "tag": "CashAndCashEquivalentsAtCarryingValue",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "totalDebt",
+      "fiscalYear": 2025,
+      "tag": "LongTermDebtNoncurrent + LongTermDebtCurrent + CommercialPaper",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    },
+    {
+      "field": "deltaNWC",
+      "fiscalYear": 2025,
+      "tag": "AssetsCurrent, LiabilitiesCurrent (derived Δ NWC level)",
+      "form": "10-K",
+      "accessionNumber": "0000320193-25-000079",
+      "filingDate": "2025-10-31",
+      "periodEnd": "2025-09-27"
+    }
+  ],
+  "generatedAt": "2026-08-08T21:00:55.010Z"
+}

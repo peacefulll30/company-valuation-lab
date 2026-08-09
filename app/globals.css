@@ -1,0 +1,197 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Design tokens — see docs/design/company-valuation-lab-design.md §1, §7.
+  Chart hexes (chart-1..5) are validated (Phase 4) via the dataviz skill's
+  validate_palette.js against both surfaces — light passes all 6 checks
+  (worst adjacent CVD ΔE 8.3, deutan, brick↔sage); dark passes all 6
+  (worst adjacent ΔE 8.2, deutan, brick↔sage). The brick/sage diverging
+  pair is the hardest CVD case (red/green) by construction — both modes
+  clear the ≥8 target outright, and the chart(s) using them still ship the
+  direct-value labels the Design spec already calls for as a second
+  channel. Re-run the validator before changing any of these five hexes.
+*/
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-fraunces);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* Brand accent — used ONLY for the primary CTA and the one "answer" figure
+     per screen (Design spec §1). Not a general-purpose UI color. */
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-hairline: var(--brand-hairline);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* Paper / Ink base */
+  --background: #f7f5f1;
+  --foreground: #14171f;
+  --card: #f7f5f1;
+  --card-foreground: #14171f;
+  --popover: #f7f5f1;
+  --popover-foreground: #14171f;
+
+  /* Ink-filled primary (default button, active states) */
+  --primary: #14171f;
+  --primary-foreground: #f7f5f1;
+
+  /* Warm-neutral secondary surfaces */
+  --secondary: #f0ede6;
+  --secondary-foreground: #14171f;
+  --muted: #f0ede6;
+  --muted-foreground: #5b6472;
+  --accent: #f0ede6;
+  --accent-foreground: #14171f;
+
+  /* Reserved for genuine blocking states only (e.g. WACC <= terminal growth) */
+  --destructive: #a6432f;
+  --destructive-foreground: #f7f5f1;
+
+  --border: #e4e0d8;
+  --input: #e4e0d8;
+  --ring: #b8863b;
+
+  /* Chart palette — categorical slots 1-3, diverging pair 4 (negative) / 5 (positive). Validated (see comment above). */
+  --chart-1: #2e5490; /* slate-navy: primary series (e.g. Revenue) */
+  --chart-2: #a8681f; /* brass: secondary series (e.g. EBITDA) */
+  --chart-3: #0f8a76; /* teal: tertiary series (e.g. Net margin) */
+  --chart-4: #b0402a; /* brick: diverging negative (Bear / below base) */
+  --chart-5: #0d8f6a; /* sage: diverging positive (Bull / above base) */
+
+  --radius: 0.375rem; /* flat, restrained — not the bubbly shadcn default */
+
+  /* Sidebar — the left workspace rail (Design spec §3). Active-tab styling is
+     a left accent bar in the component itself, not a filled background, so
+     sidebar-accent stays a barely-there wash rather than a solid fill. */
+  --sidebar: #f7f5f1;
+  --sidebar-foreground: #14171f;
+  --sidebar-primary: #14171f;
+  --sidebar-primary-foreground: #f7f5f1;
+  --sidebar-accent: #f0ede6;
+  --sidebar-accent-foreground: #14171f;
+  --sidebar-border: #e4e0d8;
+  --sidebar-ring: #b8863b;
+
+  --brand-accent: #b8863b;
+  --brand-hairline: #e4e0d8;
+}
+
+/*
+  Dark mode is explicitly out of scope for V1 (Research §21: opportunistic,
+  not core) and no theme toggle is wired up in Phase 1 — this block is inert
+  until a future phase adds one. Values below are a direct, minimal inversion
+  preserving the same hue relationships, per the Design spec's brief dark-mode
+  principles (§7) — not a full dark-mode design pass.
+*/
+.dark {
+  --background: #14171f;
+  --foreground: #f7f5f1;
+  --card: #1b1f2a;
+  --card-foreground: #f7f5f1;
+  --popover: #1b1f2a;
+  --popover-foreground: #f7f5f1;
+  --primary: #f7f5f1;
+  --primary-foreground: #14171f;
+  --secondary: #232838;
+  --secondary-foreground: #f7f5f1;
+  --muted: #232838;
+  --muted-foreground: #9aa3b2;
+  --accent: #232838;
+  --accent-foreground: #f7f5f1;
+  --destructive: #c65a41;
+  --destructive-foreground: #14171f;
+  --border: rgba(247, 245, 241, 0.12);
+  --input: rgba(247, 245, 241, 0.16);
+  --ring: #c99a4e;
+  --chart-1: #5878b8;
+  --chart-2: #ba8a3e;
+  --chart-3: #2e9c86;
+  --chart-4: #c05a3a;
+  --chart-5: #1f9a78;
+  --sidebar: #171b26;
+  --sidebar-foreground: #f7f5f1;
+  --sidebar-primary: #f7f5f1;
+  --sidebar-primary-foreground: #14171f;
+  --sidebar-accent: #232838;
+  --sidebar-accent-foreground: #f7f5f1;
+  --sidebar-border: rgba(247, 245, 241, 0.12);
+  --sidebar-ring: #c99a4e;
+  --brand-accent: #c99a4e;
+  --brand-hairline: rgba(247, 245, 241, 0.12);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Tabular figures for anything financial by default; the Fair Value hero
+     figure opts back out to proportional figures via font-display. */
+  table,
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  /* Respect reduced-motion globally rather than per-component (Design spec §8). */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
