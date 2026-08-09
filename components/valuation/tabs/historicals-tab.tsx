@@ -5,6 +5,7 @@ import { formatCompactCurrency, formatPercent } from "@/lib/format";
 import { RevenueEbitdaChart } from "@/components/charts/revenue-ebitda-chart";
 import { MarginTrendChart } from "@/components/charts/margin-trend-chart";
 import { FcfChart } from "@/components/charts/fcf-chart";
+import { ConceptInfo } from "@/components/valuation/concept-info";
 import type { FinancialLineItems } from "@/lib/engine/types";
 
 function SourcedCell({ value, item }: { value: number; item: { source: string; asOf: string } }) {
@@ -78,7 +79,10 @@ export function HistoricalsTab() {
     <div className="flex flex-col gap-8">
       <div>
         <p className="font-mono text-xs text-muted-foreground">02 — Historical Financials</p>
-        <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">Historical Financials</h1>
+        <div className="mt-1 flex items-center gap-2">
+          <h1 className="font-display text-2xl font-medium sm:text-3xl">Historical Financials</h1>
+          <ConceptInfo concept="historicals" />
+        </div>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
           Five years of filed financials, sourced and dated. Focus or hover any figure to see its filing
           source.

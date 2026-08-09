@@ -1,6 +1,7 @@
 "use client";
 
 import { useValuationWorkspace } from "@/lib/featured/ValuationWorkspaceContext";
+import { ConceptInfo } from "@/components/valuation/concept-info";
 
 export function CompsTab() {
   const { record } = useValuationWorkspace();
@@ -9,7 +10,10 @@ export function CompsTab() {
     <div className="flex flex-col gap-6">
       <div>
         <p className="font-mono text-xs text-muted-foreground">07 — Trading Comps</p>
-        <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">Trading Comps</h1>
+        <div className="mt-1 flex items-center gap-2">
+          <h1 className="font-display text-2xl font-medium sm:text-3xl">Trading Comps</h1>
+          <ConceptInfo concept="comps" />
+        </div>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
           How {record.meta.ticker}&apos;s trading multiples compare to a peer set.
         </p>

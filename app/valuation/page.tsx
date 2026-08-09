@@ -9,25 +9,32 @@ export const metadata: Metadata = {
   title: "Select a company — Company Valuation Lab",
 };
 
+/**
+ * The Start Valuation / company-selection entry screen — dark premium
+ * shell (Design spec §2 marketing-shell scope), same `.dark` token set as
+ * the landing page. Purely visual: search/Featured logic, routes, and
+ * every eligibility rule are unchanged from Phase 5.
+ */
 export default function CompanySelectionPage() {
   return (
-    <div className="flex min-h-full flex-1 flex-col">
+    <div className="dark flex min-h-full flex-1 flex-col bg-background text-foreground">
       <AppTopBar />
-      <main id="main-content" className="flex-1 py-12 sm:py-16">
-        <Container className="flex flex-col gap-10">
-          <div>
-            <h1 className="font-display text-3xl font-medium sm:text-4xl">
+      <main id="main-content" className="flex-1 py-16 sm:py-24">
+        <Container className="flex flex-col gap-14">
+          <div className="max-w-2xl">
+            <p className="font-mono text-xs tracking-[0.18em] text-muted-foreground uppercase">Start valuation</p>
+            <h1 className="mt-3 font-display text-4xl font-medium text-balance sm:text-5xl">
               Select a company
             </h1>
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
-              Search any public operating company, or pick from the Featured list
-              below — verified by hand to always work.
+            <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+              Search any public operating company, or pick from the Featured list below —
+              verified by hand to always work.
             </p>
           </div>
 
           <CompanySearch />
 
-          <FeaturedCompanies variant="full" />
+          <FeaturedCompanies />
         </Container>
       </main>
       <SiteFooter />

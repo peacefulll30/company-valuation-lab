@@ -3,6 +3,7 @@
 import { useValuationWorkspace } from "@/lib/featured/ValuationWorkspaceContext";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { ScenarioComparisonChart } from "@/components/charts/scenario-comparison-chart";
+import { ConceptInfo } from "@/components/valuation/concept-info";
 import { DEFAULT_BEAR_DELTAS, DEFAULT_BULL_DELTAS } from "@/lib/engine";
 
 export function ScenariosTab() {
@@ -54,7 +55,10 @@ export function ScenariosTab() {
     <div className="flex flex-col gap-8">
       <div>
         <p className="font-mono text-xs text-muted-foreground">05 — Scenarios</p>
-        <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">Scenarios</h1>
+        <div className="mt-1 flex items-center gap-2">
+          <h1 className="font-display text-2xl font-medium sm:text-3xl">Scenarios</h1>
+          <ConceptInfo concept="scenarios" />
+        </div>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
           Bear, Base, and Bull shown side by side. WACC ({formatPercent(assumptions.wacc)}) is held
           constant across all three — only operating assumptions vary.

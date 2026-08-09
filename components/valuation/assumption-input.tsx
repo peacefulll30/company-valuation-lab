@@ -3,6 +3,8 @@
 import { useId } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
+import { ConceptInfo } from "@/components/valuation/concept-info";
+import type { ConceptKey } from "@/lib/concepts";
 
 type AssumptionInputProps = {
   label: string;
@@ -14,6 +16,8 @@ type AssumptionInputProps = {
   step?: number;
   /** e.g. a source/as-of tag rendered under the label (WACC's pre-filled default). */
   sourceTag?: string;
+  /** Renders a "What is this?" popover next to the label — only where the term itself needs explaining (e.g. WACC). */
+  concept?: ConceptKey;
 };
 
 /** Mandatory-assumption pattern (Design spec §4/§3.x Forecast): a slider synced with a numeric field, both in %. */
@@ -25,6 +29,7 @@ export function AssumptionInput({
   max,
   step = 0.001,
   sourceTag,
+  concept,
 }: AssumptionInputProps) {
   const inputId = useId();
   const percentValue = Math.round(value * 1000) / 10; // one decimal place, in %
@@ -42,9 +47,12 @@ export function AssumptionInput({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-baseline justify-between gap-2">
-        <label htmlFor={inputId} className="text-sm font-medium">
-          {label}
-        </label>
+        <div className="flex items-center gap-1.5">
+          <label htmlFor={inputId} className="text-sm font-medium">
+            {label}
+          </label>
+          {concept ? <ConceptInfo concept={concept} /> : null}
+        </div>
         <div className="flex items-center gap-1">
           <Input
             id={inputId}

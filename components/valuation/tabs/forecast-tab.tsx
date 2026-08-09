@@ -5,6 +5,7 @@ import { AssumptionInput } from "@/components/valuation/assumption-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HistoricalVsForecastChart } from "@/components/charts/historical-vs-forecast-chart";
+import { ConceptInfo } from "@/components/valuation/concept-info";
 import { FORECAST_YEARS } from "@/lib/engine";
 import { formatPercent } from "@/lib/format";
 
@@ -29,7 +30,10 @@ export function ForecastTab() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="font-mono text-xs text-muted-foreground">03 — Forecast</p>
-          <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">Forecast</h1>
+          <div className="mt-1 flex items-center gap-2">
+            <h1 className="font-display text-2xl font-medium sm:text-3xl">Forecast</h1>
+            <ConceptInfo concept="forecast" />
+          </div>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
             Five mandatory assumptions drive a {FORECAST_YEARS}-year forecast. Every downstream tab
             recomputes as you edit.
@@ -83,6 +87,7 @@ export function ForecastTab() {
             min={0.02}
             max={0.2}
             sourceTag={`Default: cost of equity proxy — risk-free ${formatPercent(waccExplanation.riskFreeRate.value)} (${waccExplanation.riskFreeRate.source}, ${waccExplanation.riskFreeRate.asOf}) + beta ${waccExplanation.beta.value.toFixed(1)} × ERP ${formatPercent(waccExplanation.equityRiskPremium.value)}`}
+            concept="wacc"
           />
           <AssumptionInput
             label="Terminal growth"

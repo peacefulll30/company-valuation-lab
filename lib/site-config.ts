@@ -27,39 +27,59 @@ export const workspaceSections = [
 export type WorkspaceSectionSlug = (typeof workspaceSections)[number]["slug"];
 
 /**
- * Placeholder-only capability grid for the Landing page. No financial
- * figures — see CLAUDE.md "Do not invent live company data."
+ * Landing capability story (Design spec §2 marketing shell) — no financial
+ * figures, see CLAUDE.md "Do not invent live company data." Descriptions
+ * fold in a plain-language explanation of the underlying concept (reusing
+ * the same idea as `lib/concepts.ts`, kept product-framed here rather than
+ * imported verbatim, since this is "what the platform does" not "what the
+ * term means" — the in-workspace popovers own the literal definitions).
  */
 export const capabilities = [
   {
+    step: "01",
     title: "Historical analysis",
     description:
-      "Five years of filed financials, with margins, growth, and leverage derived — not re-entered.",
+      "Five years of a company's real, filed results — revenue, profit, cash flow — with margins and growth derived, not re-entered. You can't forecast a future you don't understand the past of.",
   },
   {
+    step: "02",
     title: "Forecasting",
     description:
-      "A five-year forecast with five mandatory assumptions visible by default, deeper controls tucked behind Advanced.",
+      "A five-year forecast built from assumptions you can see and change — how fast revenue grows, how much margin it keeps. Five mandatory inputs, deeper controls tucked behind Advanced.",
   },
   {
+    step: "03",
     title: "DCF, scenarios & sensitivity",
     description:
-      "A full UFCF-to-share-price bridge, Bear/Base/Bull scenarios, and a WACC × growth sensitivity grid.",
+      "A full cash-flow-to-share-price bridge, discounted at WACC. Bear/Base/Bull frame a realistic range instead of one guess; the sensitivity grid shows exactly what the answer leans on.",
   },
   {
+    step: "04",
     title: "AI Analyst",
     description:
-      "Explains what the model computed and why — it never calculates a number on its own.",
+      "Ask it to explain any part of the model, or test a real what-if — it recalculates through the same engine as the rest of the app. It never invents a number of its own.",
   },
 ] as const;
 
 export const methodologySteps = [
-  { step: "01", label: "Historicals", detail: "Five years, sourced and dated." },
-  { step: "02", label: "Forecast", detail: "Assumptions you can see and change." },
-  { step: "03", label: "DCF", detail: "UFCF discounted at WACC to a share price." },
+  {
+    step: "01",
+    label: "Historicals",
+    detail: "Five years, sourced and dated — the foundation everything else builds on.",
+  },
+  {
+    step: "02",
+    label: "Forecast",
+    detail: "Assumptions you can see and change, projected five years forward.",
+  },
+  {
+    step: "03",
+    label: "DCF",
+    detail: "Future cash flow, discounted at WACC, to what it's worth today.",
+  },
   {
     step: "04",
     label: "Scenarios & Sensitivity",
-    detail: "How much the answer moves, and why.",
+    detail: "How much the answer moves if growth, margin, or WACC shift — and why.",
   },
 ] as const;

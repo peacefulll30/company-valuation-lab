@@ -10,15 +10,22 @@ type InteractiveHoverButtonProps = {
   href: string;
   children: ReactNode;
   className?: string;
+  /**
+   * Concrete hex colors for the label/arrow at rest and on hover — Framer
+   * Motion needs resolvable colors to interpolate between, not `var()`
+   * references (app/globals.css). Defaults match the light-mode contract
+   * (Design spec §2): ink-filled at rest (paper label), brass fill on
+   * hover (ink label). Dark-surface call sites (Design spec §2 marketing
+   * shell) pass the inverted pair — see hero.tsx / final-cta.tsx.
+   */
+  restColor?: string;
+  hoverColor?: string;
 };
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-// Concrete hex values mirroring the --foreground / --primary-foreground
-// tokens (app/globals.css) — Framer Motion needs resolvable colors to
-// interpolate between, not var() references.
-const INK = "#14171f";
-const PAPER = "#f7f5f1";
+const DEFAULT_REST = "#f7f5f1"; // paper
+const DEFAULT_HOVER = "#14171f"; // ink
 
 /**
  * The approved InteractiveHoverButton-style CTA (Design spec §2): flat
@@ -30,6 +37,8 @@ export function InteractiveHoverButton({
   href,
   children,
   className,
+  restColor = DEFAULT_REST,
+  hoverColor = DEFAULT_HOVER,
 }: InteractiveHoverButtonProps) {
   const [active, setActive] = useState(false);
   const prefersReducedMotion = useReducedMotion();
@@ -58,7 +67,7 @@ export function InteractiveHoverButton({
       <motion.span
         className="inline-flex items-center"
         initial={false}
-        animate={{ x: active ? -6 : 0, color: active ? INK : PAPER }}
+        animate={{ x: active ? -6 : 0, color: active ? hoverColor : restColor }}
         transition={{ duration, ease: EASE }}
       >
         {children}
@@ -70,7 +79,7 @@ export function InteractiveHoverButton({
           width: active ? 20 : 0,
           marginLeft: active ? 8 : 0,
           opacity: active ? 1 : 0,
-          color: active ? INK : PAPER,
+          color: active ? hoverColor : restColor,
         }}
         transition={{ duration, ease: EASE }}
         aria-hidden="true"

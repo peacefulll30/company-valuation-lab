@@ -1,6 +1,7 @@
 "use client";
 
 import { useValuationWorkspace } from "@/lib/featured/ValuationWorkspaceContext";
+import { ConceptInfo } from "@/components/valuation/concept-info";
 import { formatCurrency, formatPercent } from "@/lib/format";
 
 function cellBackground(price: number | null, basePrice: number): string {
@@ -40,7 +41,10 @@ export function SensitivityTab() {
     <div className="flex flex-col gap-8">
       <div>
         <p className="font-mono text-xs text-muted-foreground">06 — Sensitivity</p>
-        <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">Sensitivity</h1>
+        <div className="mt-1 flex items-center gap-2">
+          <h1 className="font-display text-2xl font-medium sm:text-3xl">Sensitivity</h1>
+          <ConceptInfo concept="sensitivity" />
+        </div>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
           Implied share price across a range of WACC and terminal growth assumptions — a model output
           under stated assumptions, not a price forecast. Cells where growth ≥ WACC are blocked, never

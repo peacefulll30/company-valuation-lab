@@ -70,45 +70,88 @@ Both Fraunces and IBM Plex Mono are used narrowly and specifically, so the restr
 as a choice, not an oversight — the frontend-design skill's "spend your boldness in one place"
 applies to type as much as to layout.
 
-## 2. Landing / Intro
+## 2. Landing / Intro — V1.1 Cinematic Marketing Shell
 
-**Hero** (Framer Motion, the approved animated-hero reference, adapted with real product copy —
-not demo text):
+**Scope of this section, stated explicitly (the "stated reason" §7's motion rule requires for any
+animation beyond hero+CTA):** the treatment below applies **only** to `/` (Landing) and the
+`/valuation` company-selection/search-entry screen — the discovery funnel a visitor sees before
+they've committed to a company. It does not touch `/valuation/[companySlug]/*` (the actual
+workspace): that dense, data-dense tool keeps every rule in §3–§8 exactly as written — Paper/Ink
+base, "only this motion" for hero+CTA, flat hairline cards, no glass effects. A marketing shell
+that sells the idea of the product and a working instrument that computes with it are different
+contexts with different jobs; this is a deliberate, bounded exception, not a quiet drift of the
+whole system. If the workspace itself ever goes cinematic, that's a new, separately-considered
+decision — not an automatic inheritance from this section.
+
+**Palette**: this shell activates the `.dark` tokens already defined and validated in `app/
+globals.css` (§7's "if added: invert to a deep ink surface, not pure black, preserve the same hue
+relationships" — already done, not a new palette). Background `#14171F` (ink, not pure black),
+card surfaces a touch lighter (`#1B1F2A`), the same single brass accent family (`#C99A4E` in this
+mode) used exactly as restrictively as in light mode — the primary CTA and one "answer" moment per
+screen, never a decorative wash. The validated dark chart palette (`--chart-1..5`, comment in
+`globals.css`) is unchanged and unused here (no charts on the marketing shell).
+
+**No glassmorphism, still.** "Premium dark" is achieved with: a single soft, low-opacity radial
+brass glow anchored behind the hero headline (an ambient light source, not a panel treatment),
+fine hairlines that catch it, and restrained grain/texture — never a frosted, translucent
+`backdrop-blur` card. The §1 "no gradients/glassmorphism" rule holds; what changes is the surface
+color, not the material language.
+
+**Signature motif carries over, doesn't get replaced.** The range-bracket (`⊢────⊣`) and "range
+resolving to a value" idea from §1 *is* the ambient hero motion — ticks, thin glowing line
+fragments, and value fragments (a price, a percentage) drifting and fading at low opacity — not a
+generic particle/starfield effect. This is why it doesn't read as "crypto dashboard": it's the
+product's own existing device, not a bolted-on decoration.
+
+**Hero** — dominant first screen, large Fraunces type, generous vertical space:
 
 - Eyebrow (small, mono, tracked out): `DCF · WACC · SCENARIOS · SENSITIVITY · AI ANALYST`
-- Headline (Fraunces, staggered word-group reveal, ~50ms stagger, y-offset + fade — not a
-  per-character typewriter, which reads as generic/AI-generated):
-  *"What is this company actually worth — and how confident should you be?"*
-- Sub-headline (Inter, fades in after headline settles):
-  *"Company Valuation Lab builds a full DCF, WACC, scenario, and sensitivity model from real
-  filings — then shows exactly which assumptions are driving the answer."*
-- **The "subtle live/data motion"** requested is this same moment, not a separate effect: a small
-  example figure beside the headline shows a range bracket narrowing to a resolved value (e.g.
-  "$142–$198 → $167") once, after the text settles — a single deliberate beat, not a looping
-  animation. This is the hero's only motion beyond text entrance, per "spend your boldness in one
-  place."
-- Primary CTA — **InteractiveHoverButton-style**, label locked to **"Start Valuation"**: flat
-  ink-filled rectangle at rest, paper-colored label. On hover (~180ms, expo-out easing): the label
-  shifts left, a brass fill sweeps in left-to-right beneath it, and a small arrow (lucide
-  `ArrowRight`) slides in and settles at the right edge. Precise and fast, not bouncy — confidence,
-  not playfulness.
-- Reduced motion: the sequence collapses to a single opacity fade for the hero, and the CTA hover
-  becomes an instant color swap with no sweep/slide.
+- Headline (Fraunces, staggered word-group reveal — unchanged from the original approved
+  reference): *"What is this company actually worth — and how confident should you be?"*
+- Sub-headline (Inter, fades in after headline settles) — unchanged copy.
+- Ambient background motion (the one addition beyond the original approved hero): slow, low-
+  opacity drifting bracket-ticks and value fragments, GPU-cheap (transform/opacity only),
+  `prefers-reduced-motion` collapses it to a static, single frame.
+- Primary CTA — same InteractiveHoverButton contract as before (label "Start Valuation", brass
+  sweep on hover), re-skinned for the dark surface (ink label on brass, not paper on ink).
 
-**"What can this platform do?"** — a compact 4-item capability grid below the fold (Historical
-Analysis, Forecasting, DCF + Scenarios, AI Analyst), each a short label + one sentence, no icon-in-
-circle blobs — a small lucide icon and a hairline-bordered flat card per item.
+**"What can this platform do?"** — the same 4 capabilities (Historical Analysis, Forecasting,
+DCF + Scenarios + Sensitivity, AI Analyst), now a scroll-driven progressive reveal instead of a
+static grid: one capability dominant at a time as the user scrolls, neighbors visible but
+receded (scale/opacity, not hidden), each paired with one plain-language sentence of what that
+concept means (reusing `lib/concepts.ts`, the same source the in-workspace "What is this?"
+popovers draw from — one explanation, not two that can drift). Mobile: the sticky-scroll mechanism
+is replaced with a simple stacked fade-in-on-view sequence — no sticky pinning, no scroll-jacking.
 
-**Methodology / trust rail** — a horizontal 4-step rail (Historicals → Forecast → DCF →
-Scenarios/Sensitivity) connected by a hairline, mono step numerals (01–04, justified here because
-it's a real sequence, not decoration), plus one line on sourcing: *"Every figure traces to a filing
-or a stated assumption — SEC EDGAR for financials, dated defaults for market inputs."* Disclaimer
-line directly beneath, small and permanent, not a dismissible banner: *"Model-based estimates for
-research and portfolio purposes. Not investment advice."*
+**"How the valuation is built"** — the same 4-step methodology rail (Historicals → Forecast → DCF
+→ Scenarios/Sensitivity), same progressive-reveal treatment as above, framed as a guided process
+rather than a static table. Sourcing line and disclaimer persist beneath, unchanged in wording.
 
-**Featured Companies preview** — a horizontal strip of 8–12 flat cards (ticker, name, sector),
-styled like a research-desk coverage list, not app-store tiles: hairline border, no logos/photos,
-mono ticker + Inter name. Clicking one skips search and opens that company's Overview directly.
+**Featured Companies** — all 10, immediately visible (not a 6-of-10 preview slice), each card a
+ticker + name + a small branded monogram (a letterform in a brand-recognizable hue, not a
+reproduced third-party logo asset — see implementation note below) with a tasteful hover lift.
+Clicking one skips search and opens that company's Overview directly, unchanged.
+
+**Final CTA** — a full, cinematic closing section ("Ready to value a company?" / "Start
+Valuation"), same InteractiveHoverButton contract, larger scale. Activating it plays a short
+(≤900ms), reduced-motion-aware transition — a brief "Enjoy the analysis." beat — before routing to
+`/valuation`. Never a substitute for the real loading state if data isn't ready yet; purely a
+felt-quality moment on top of an already-fast navigation.
+
+**Company monogram note**: real third-party brand logos are not embedded as reproduced artwork —
+no verified, reliable, appropriately-licensed local asset exists for all 10, and a hotlinked
+external logo CDN is both a reliability risk (broken images) and unnecessary trademark exposure
+for a decorative touch. Clean, original monograms (ticker-derived letterform, brand-adjacent hue)
+satisfy "recognizable" without either risk, and are the documented fallback this spec itself calls
+for.
+
+**Educational layer**: `lib/concepts.ts` holds one short, human explanation per core term
+(Historicals, Forecast, DCF, WACC, Scenarios, Sensitivity, Trading Comps, AI Analyst). The landing
+scroll-story sections surface the 4 that map to Methodology's steps; the in-workspace `ConceptInfo`
+popover (a small inline "What is this?" trigger next to the relevant heading — Historicals,
+Forecast, DCF, WACC, Scenarios, Sensitivity, Trading Comps, AI Analyst tabs) surfaces all 8 in
+context, on demand, never auto-opened. This is explanation, not a course: one short paragraph per
+concept, never more.
 
 ## 3. App Shell
 
@@ -266,10 +309,11 @@ avatar icons.
   (150–200ms). No scroll-jacking, no parallax, no decorative background motion.
 - **Icons**: lucide-react, functional only (nav, status, disclosure chevrons) — never decorative,
   never doubled up with a label that already says the same thing.
-- **Dark mode**: explicitly V1.5/opportunistic (Research §21), not designed in depth here. If
-  added: invert to a deep ink surface (not pure black), preserve the same hue relationships, and
-  re-validate the chart palette against the dark surface separately — never an automatic filter-
-  invert of the light palette.
+- **Dark mode**: still V1.5/opportunistic for the in-app workspace itself (Research §21) — Paper/
+  Ink stays the default and only theme for `/valuation/[companySlug]/*`. It is live, deliberately,
+  for the marketing shell only (§2): a deep ink surface, not pure black, same hue relationships,
+  chart palette already re-validated against it (comment in `app/globals.css`). No workspace
+  theme toggle exists or is implied by this.
 
 ## 8. Responsive + Accessibility
 

@@ -3,6 +3,7 @@
 import { useValuationWorkspace } from "@/lib/featured/ValuationWorkspaceContext";
 import { formatCompactCurrency, formatPercent } from "@/lib/format";
 import { EvEquityWaterfallChart } from "@/components/charts/ev-equity-waterfall-chart";
+import { ConceptInfo } from "@/components/valuation/concept-info";
 import { DIVERGENCE_THRESHOLD } from "@/lib/engine";
 
 export function DcfTab() {
@@ -29,7 +30,10 @@ export function DcfTab() {
     <div className="flex flex-col gap-8">
       <div>
         <p className="font-mono text-xs text-muted-foreground">04 — DCF</p>
-        <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">DCF</h1>
+        <div className="mt-1 flex items-center gap-2">
+          <h1 className="font-display text-2xl font-medium sm:text-3xl">DCF</h1>
+          <ConceptInfo concept="dcf" />
+        </div>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
           The UFCF bridge from Revenue to unlevered free cash flow, discounted at WACC to a share price.
         </p>
@@ -100,7 +104,18 @@ export function DcfTab() {
 
       <details className="group rounded-md border border-border">
         <summary className="flex cursor-pointer items-center justify-between gap-2 px-4 py-3 text-sm font-medium select-none">
-          <span>Advanced: WACC formula ledger</span>
+          <span className="flex items-center gap-1.5">
+            Advanced: WACC formula ledger
+            {/* Prevent + stop propagation so opening the definition doesn't also toggle the parent <summary> (its native click-to-toggle behavior needs preventDefault, not just stopPropagation). */}
+            <span
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              <ConceptInfo concept="wacc" />
+            </span>
+          </span>
           <span className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground uppercase">
             Advanced
           </span>
