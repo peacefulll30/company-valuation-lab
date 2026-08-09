@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { DcfTab } from "@/components/valuation/tabs/dcf-tab";
+import { WorkspaceJourney } from "@/components/valuation/workspace-journey";
 
 export const metadata: Metadata = { title: "DCF — Company Valuation Lab" };
 
 export default function DcfPage() {
-  return <DcfTab />;
+  return <WorkspaceJourney initialSlug="dcf" />;
 }

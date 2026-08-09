@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
-import { Container } from "@/components/brand/container";
 import { AppTopBar } from "@/components/valuation/app-top-bar";
-import { CompanyContextHeaderLive, FairValuePanelLive } from "@/components/valuation/workspace-live";
+import { CompanyContextHeaderLive } from "@/components/valuation/workspace-live";
 import { CompanyUnavailable } from "@/components/valuation/company-unavailable";
-import { WorkspaceSidebar } from "@/components/valuation/workspace-sidebar";
-import { MobileWorkspaceNav } from "@/components/valuation/mobile-workspace-nav";
+import { WorkspaceShell } from "@/components/valuation/workspace-shell";
 import { getFeaturedCompany, featuredSlugs } from "@/lib/featured";
 import { buildDefaultAssumptions } from "@/lib/featured/defaultAssumptions";
 import { ValuationWorkspaceProvider } from "@/lib/featured/ValuationWorkspaceContext";
@@ -25,10 +23,23 @@ export async function generateMetadata({
 }
 
 /**
- * The workspace shell (Design spec §3): left sidebar rail on desktop, an
- * icon rail on tablet, a bottom-sheet nav on mobile — and a persistent Fair
- * Value stat that lives in the sidebar footer on desktop and slides into a
- * sticky bottom bar everywhere narrower.
+ * The workspace shell (Design spec §3, V1.2 dark pass) — left sidebar rail
+ * on desktop, an icon rail on tablet, a bottom-sheet nav on mobile — and a
+ * persistent Fair Value stat that lives in the sidebar footer on desktop
+ * and slides into a sticky bottom bar everywhere narrower. The dark,
+ * near-black treatment (previously scoped to the marketing shell only —
+ * see the `.dark` block comment in `app/globals.css`) now extends here
+ * too: every value below reads from semantic tokens (`bg-card`,
+ * `text-foreground`, `var(--chart-1)`, …), so wrapping the tree in `.dark`
+ * re-themes the whole workspace, charts included, with no per-component
+ * changes needed.
+ *
+ * `children` is one of the 9 tab routes, each of which renders
+ * `<WorkspaceJourney initialSlug="…">` — the actual content for ALL 9
+ * sections, composited into one continuous scrollable page inside
+ * `WorkspaceShell`. The route still matters (it's what tells the journey
+ * which section to land on, and keeps every tab a real, addressable URL),
+ * it just no longer corresponds to a full page swap once loaded.
  *
  * Default Assumptions are computed once here (server-side, from the
  * company's own historicals + the shared market-assumption defaults) and
@@ -46,7 +57,9 @@ export default async function CompanyWorkspaceLayout({
 
   if ("error" in resolution) {
     return (
-      <CompanyUnavailable status={resolution.error.status} reason={resolution.error.reason} companySlug={companySlug} />
+      <div className="dark flex min-h-full flex-1 flex-col bg-background text-foreground">
+        <CompanyUnavailable status={resolution.error.status} reason={resolution.error.reason} companySlug={companySlug} />
+      </div>
     );
   }
 
@@ -54,43 +67,14 @@ export default async function CompanyWorkspaceLayout({
   const { assumptions, waccExplanation } = buildDefaultAssumptions(record.financials);
 
   return (
-    <ValuationWorkspaceProvider record={record} defaultAssumptions={assumptions} waccExplanation={waccExplanation}>
-      <div className="flex min-h-full flex-1 flex-col">
-        <AppTopBar />
-        <CompanyContextHeaderLive companySlug={companySlug} />
-
-        <div className="flex flex-1 flex-col md:flex-row">
-          <aside className="hidden shrink-0 flex-col border-r border-border md:flex md:w-14 lg:w-60">
-            <WorkspaceSidebar
-              companySlug={companySlug}
-              variant="full"
-              className="hidden flex-1 py-4 lg:block"
-            />
-            <WorkspaceSidebar
-              companySlug={companySlug}
-              variant="icon"
-              className="flex-1 py-4 lg:hidden"
-            />
-            <FairValuePanelLive className="hidden border-t border-border lg:block" />
-          </aside>
-
-          <div className="flex flex-1 flex-col">
-            <div className="border-b border-border py-3 md:hidden">
-              <Container>
-                <MobileWorkspaceNav companySlug={companySlug} />
-              </Container>
-            </div>
-
-            <main id="main-content" className="flex-1 pb-20 lg:pb-0">
-              <Container className="py-10">{children}</Container>
-            </main>
-          </div>
+    <div className="dark flex min-h-full flex-1 flex-col bg-background text-foreground">
+      <ValuationWorkspaceProvider record={record} defaultAssumptions={assumptions} waccExplanation={waccExplanation}>
+        <div className="flex min-h-full flex-1 flex-col">
+          <AppTopBar />
+          <CompanyContextHeaderLive companySlug={companySlug} />
+          <WorkspaceShell companySlug={companySlug}>{children}</WorkspaceShell>
         </div>
-
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background lg:hidden">
-          <FairValuePanelLive variant="bar" />
-        </div>
-      </div>
-    </ValuationWorkspaceProvider>
+      </ValuationWorkspaceProvider>
+    </div>
   );
 }

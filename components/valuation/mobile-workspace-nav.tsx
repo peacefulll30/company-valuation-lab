@@ -13,7 +13,7 @@ import {
 import { WorkspaceSidebar } from "@/components/valuation/workspace-sidebar";
 
 /** Mobile-only bottom-sheet nav (Design spec §3, §8). */
-export function MobileWorkspaceNav({ companySlug }: { companySlug: string }) {
+export function MobileWorkspaceNav() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,11 +28,7 @@ export function MobileWorkspaceNav({ companySlug }: { companySlug: string }) {
         <SheetHeader>
           <SheetTitle>Valuation workspace</SheetTitle>
         </SheetHeader>
-        <WorkspaceSidebar
-          companySlug={companySlug}
-          className="pb-4"
-          onNavigate={() => setOpen(false)}
-        />
+        <WorkspaceSidebar className="pb-4" onNavigate={() => setOpen(false)} indicatorScope="mobile" />
       </SheetContent>
     </Sheet>
   );

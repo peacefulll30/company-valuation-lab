@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { ForecastTab } from "@/components/valuation/tabs/forecast-tab";
+import { WorkspaceJourney } from "@/components/valuation/workspace-journey";
 
 export const metadata: Metadata = { title: "Forecast — Company Valuation Lab" };
 
 export default function ForecastPage() {
-  return <ForecastTab />;
+  return <WorkspaceJourney initialSlug="forecast" />;
 }

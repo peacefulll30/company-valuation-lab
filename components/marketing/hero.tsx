@@ -106,7 +106,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: prefersReducedMotion ? 0.01 : 0.9, delay: prefersReducedMotion ? 0 : 0.4, ease: EASE }}
-          className="relative hidden aspect-square w-full max-w-md justify-self-center lg:block"
+          className="relative hidden aspect-[16/9.2] w-full max-w-xl justify-self-center lg:block"
         >
           <ValuationEngineVisual className="size-full" />
         </motion.div>

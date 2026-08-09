@@ -24,6 +24,10 @@ export function OverviewTab() {
       <div>
         <p className="font-mono text-xs text-muted-foreground">01 — Overview</p>
         <h1 className="mt-1 font-display text-2xl font-medium sm:text-3xl">{meta.name}</h1>
+        <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+          A high-level picture of the company and the valuation model — everything on the sections
+          below builds toward one number.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr_1fr]">

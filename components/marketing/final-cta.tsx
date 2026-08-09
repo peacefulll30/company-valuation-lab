@@ -9,7 +9,7 @@ import { AmbientField } from "@/components/marketing/ambient-field";
 import { IlluminatedButton } from "@/components/marketing/illuminated-button";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
-const TRANSITION_MS = 780;
+const TRANSITION_MS = 1500;
 
 // Fixed angles (not random) for the dispersion burst — this only ever
 // mounts client-side after a click, so hydration isn't the concern; the
@@ -20,10 +20,11 @@ const BURST_ANGLES = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
 /**
  * The landing page's real finale (Design spec §2, brief §7) — a
  * full-screen cinematic close, not a cramped afterthought section. On
- * activation it plays a short (<1s) brass dispersion and a calm "Enjoy
- * the analysis." beat before routing into `/valuation` — never a
- * substitute for real loading state, purely a felt-quality moment on top
- * of an already-fast navigation.
+ * activation it plays a brass dispersion and holds a large, centered
+ * "Enjoy the analysis." for ~1.5s (long enough to actually read, short
+ * enough not to feel like a loading screen) before routing into
+ * `/valuation` — never a substitute for real loading state, purely a
+ * felt-quality moment on top of an already-fast navigation.
  */
 export function FinalCta() {
   const router = useRouter();
@@ -66,13 +67,25 @@ export function FinalCta() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.3 }}
             role="status"
             aria-live="polite"
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-background"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-background"
           >
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 opacity-70"
+              style={{ background: "radial-gradient(circle at 50% 50%, var(--brand-glow) 0%, transparent 60%)" }}
+            />
             <DispersionBurst />
-            <p className="font-display text-2xl text-foreground italic">Enjoy the analysis.</p>
+            <motion.p
+              initial={{ opacity: 0, y: 10, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.55, delay: 0.15, ease: EASE }}
+              className="relative max-w-4xl px-6 text-center font-display text-6xl font-medium text-balance text-foreground italic sm:text-7xl lg:text-8xl"
+            >
+              Enjoy the analysis.
+            </motion.p>
           </motion.div>
         ) : null}
       </AnimatePresence>
@@ -82,19 +95,19 @@ export function FinalCta() {
 
 function DispersionBurst() {
   return (
-    <div aria-hidden="true" className="relative size-2">
+    <div aria-hidden="true" className="pointer-events-none absolute size-2">
       {BURST_ANGLES.map((angle) => (
         <motion.span
           key={angle}
-          className="absolute top-1/2 left-1/2 size-1 rounded-full bg-brand-accent"
-          initial={{ x: 0, y: 0, opacity: 0.9, scale: 1 }}
+          className="absolute top-1/2 left-1/2 size-1.5 rounded-full bg-brand-accent"
+          initial={{ x: 0, y: 0, opacity: 0.95, scale: 1 }}
           animate={{
-            x: Math.cos((angle * Math.PI) / 180) * 70,
-            y: Math.sin((angle * Math.PI) / 180) * 70,
+            x: Math.cos((angle * Math.PI) / 180) * 220,
+            y: Math.sin((angle * Math.PI) / 180) * 220,
             opacity: 0,
-            scale: 0.4,
+            scale: 0.3,
           }}
-          transition={{ duration: 0.7, ease: EASE }}
+          transition={{ duration: 1.1, ease: EASE }}
         />
       ))}
     </div>

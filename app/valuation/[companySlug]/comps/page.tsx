@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { CompsTab } from "@/components/valuation/tabs/comps-tab";
+import { WorkspaceJourney } from "@/components/valuation/workspace-journey";
 
 export const metadata: Metadata = { title: "Trading Comps — Company Valuation Lab" };
 
 export default function CompsPage() {
-  return <CompsTab />;
+  return <WorkspaceJourney initialSlug="comps" />;
 }

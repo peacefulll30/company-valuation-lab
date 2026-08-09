@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { HistoricalsTab } from "@/components/valuation/tabs/historicals-tab";
+import { WorkspaceJourney } from "@/components/valuation/workspace-journey";
 
 export const metadata: Metadata = { title: "Historical Financials — Company Valuation Lab" };
 
 export default function HistoricalsPage() {
-  return <HistoricalsTab />;
+  return <WorkspaceJourney initialSlug="historicals" />;
 }

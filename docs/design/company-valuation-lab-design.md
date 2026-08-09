@@ -73,15 +73,15 @@ applies to type as much as to layout.
 ## 2. Landing / Intro — V1.1 Cinematic Marketing Shell
 
 **Scope of this section, stated explicitly (the "stated reason" §7's motion rule requires for any
-animation beyond hero+CTA):** the treatment below applies **only** to `/` (Landing) and the
-`/valuation` company-selection/search-entry screen — the discovery funnel a visitor sees before
-they've committed to a company. It does not touch `/valuation/[companySlug]/*` (the actual
-workspace): that dense, data-dense tool keeps every rule in §3–§8 exactly as written — Paper/Ink
-base, "only this motion" for hero+CTA, flat hairline cards, no glass effects. A marketing shell
-that sells the idea of the product and a working instrument that computes with it are different
-contexts with different jobs; this is a deliberate, bounded exception, not a quiet drift of the
-whole system. If the workspace itself ever goes cinematic, that's a new, separately-considered
-decision — not an automatic inheritance from this section.
+animation beyond hero+CTA):** the treatment below originally applied **only** to `/` (Landing) and
+the `/valuation` company-selection/search-entry screen — the discovery funnel a visitor sees before
+they've committed to a company — and explicitly excluded `/valuation/[companySlug]/*` (the actual
+workspace). **V1.2 supersedes that exclusion**: the workspace now carries the same dark,
+near-black visual identity too (see §3's rewrite below) — this was a deliberate, separately
+considered decision at that point, not a quiet drift, and it's the reason §3 below no longer
+describes a Paper/Ink workspace. The marketing shell's motion vocabulary (hero+CTA only, "no
+animation without a stated reason") still governs `/` and `/valuation`; the workspace's own motion
+is scoped separately in §3.x and §7.
 
 **Palette**: this shell activates the `.dark` tokens already defined and validated in `app/
 globals.css` (§7's "if added: invert to a deep ink surface, not pure black, preserve the same hue
@@ -153,27 +153,52 @@ Forecast, DCF, WACC, Scenarios, Sensitivity, Trading Comps, AI Analyst tabs) sur
 context, on demand, never auto-opened. This is explanation, not a course: one short paragraph per
 concept, never more.
 
-## 3. App Shell
+**V1.2**: every one of the 9 workspace sections now opens with a 1–2 sentence "what is this page
+about" line beneath its heading (7 already had one in practice; Overview and Valuation Summary
+gained theirs in this pass) — plain-language orientation for someone learning valuation, distinct
+from `ConceptInfo`'s on-demand term definitions.
+
+## 3. App Shell (V1.2: dark, one continuous scroll journey)
 
 **Top bar**: wordmark (`Company Valuation Lab`, Inter medium, "Lab" set in Fraunces italic as the
-one distinguishing touch) + a persistent, prominent search input (not an icon-triggered overlay —
-search is core V1, not secondary) + a "Featured" quick-access affordance.
+one distinguishing touch, now carrying a restrained periodic brass shimmer — CSS-only, a few
+seconds of sweep inside a long, mostly-idle cycle, never a continuous loop) + a persistent,
+prominent search input (not an icon-triggered overlay — search is core V1, not secondary) + a
+"Featured" quick-access affordance.
 
-**Inside a company's flow** (`/valuation/[companySlug]/*`): a **left sidebar rail**, not a top tab
-strip — closer to a research-terminal workspace than a marketing site. Each of the 9 addressable
-tabs (§Architecture 2) is a row: mono step numeral (01–09) + label. Active tab = a 2px brass left
-border + bold label, never a filled pill (keeps the flat, restrained language consistent).
-Numbering is justified here — this is a real guided sequence, even though every step is also
-independently reachable.
+**Inside a company's flow** (`/valuation/[companySlug]/*`): the near-black, graphite-surface
+treatment from §2 now applies here too (V1.2), not just the marketing shell — every workspace
+component already read exclusively from semantic tokens, so this was a one-line `.dark` wrapper in
+the route's `layout.tsx`, not a component-by-component rewrite. Charts, tables, and cards keep
+every rule below unchanged; only the surface colors moved.
 
-**Persistent company context header**, visible from every tab: ticker, name, tier badge
-(`Featured` / a subtle `Searched` label), current price with its as-of tag, and — once computed —
-a small **persistent "Fair Value" stat** pinned in the sidebar footer, updating live as assumptions
-change. This is the one number the whole product exists to produce; it stays visible while the
-user explores every other tab, per finance-product-builder's visual-hierarchy rule.
+The 9 addressable sections (§Architecture 2) are no longer 9 separate page loads. They're
+composited into **one continuous, scrollable page** — Overview through AI Analyst, in order — so
+the product reads as a single guided valuation story rather than a tab-click grind. Each section
+keeps its own URL (`/valuation/[companySlug]/overview`, `…/dcf`, etc.): landing on one scrolls the
+page there instantly on load, and the URL keeps updating (without a page navigation) as the user
+scrolls past each section, so every step stays a real, shareable, addressable link — "9 addressable
+tabs" is satisfied by 9 addressable *scroll positions* in one document, not 9 separate documents.
+
+The **left sidebar rail** (a research-terminal rail, not a top tab strip) tracks scroll position
+directly (an `IntersectionObserver` watching a thin band near the top of the viewport), not a route
+match. Each row: mono step numeral (01–09) + label, in one of three states — **active** (brass left
+indicator, full-brightness label, a Framer `layout`-animated indicator that glides between rows
+rather than jumping), **passed** (subdued but still legible), **upcoming** (lowest emphasis). A
+click smooth-scrolls to that section (`scrollIntoView`, never a hijacked/intercepted scroll) —
+clicking and natural scrolling both work, and neither fights the other. Numbering is justified
+here — this is a real guided sequence, even though every step is also independently reachable.
+
+**Persistent company context header**, visible above the whole scrolling page: ticker, name, tier
+badge (`Featured` / a subtle `Searched` label), current price with its as-of tag, and — once
+computed — a small **persistent "Fair Value" stat** pinned in the sidebar footer, updating live as
+assumptions change. This is the one number the whole product exists to produce; it stays visible
+while the user scrolls through every section, per finance-product-builder's visual-hierarchy rule.
 
 **Mobile**: sidebar collapses to a bottom sheet triggered from a compact top bar; the persistent
-Fair Value stat moves to a slim sticky footer bar instead of a sidebar footer.
+Fair Value stat moves to a slim sticky footer bar instead of a sidebar footer. The continuous-scroll
+page works identically on mobile — it's simply a normal scrolling page there too, with no sticky
+pinning to manage.
 
 ## 3.x Product Sections — Layout & Purpose
 

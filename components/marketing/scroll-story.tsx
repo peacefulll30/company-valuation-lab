@@ -1,10 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { useCallback, useRef, useState } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { Container } from "@/components/brand/container";
 import { StageVisual, type StageVisualKey } from "@/components/marketing/stage-visual";
 import { cn } from "@/lib/utils";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export type ScrollStoryItem = {
   step: string;
@@ -14,19 +16,22 @@ export type ScrollStoryItem = {
 };
 
 /**
- * Shared progressive-reveal mechanism (Design spec §2 marketing shell) for
- * "What can this platform do?" and "How the valuation is built" — one item
- * dominant at a time as the user scrolls, neighbors visible but receded
- * (never blurred to the point of looking broken — see the floor values in
- * `StoryItemAnimated`).
+ * Shared "numbered list + detail panel" mechanism for "What can this
+ * platform do?" and "How the valuation is built" — all N items sit in
+ * their own fixed row, always visible; only ONE dedicated panel on the
+ * right ever shows a description/visual, cross-fading between items. This
+ * replaces an earlier version that stacked every item's title/description
+ * absolutely on top of the others (`inset-0`, opacity floor > 0) — during
+ * a transition two items would both sit at ~50% opacity in the exact same
+ * physical spot, reading as broken, overlapping text. Nothing here is ever
+ * positioned on top of anything else.
  *
- * This is scroll-*linked* animation (CSS `position: sticky` + Framer
- * Motion reading scroll progress to drive opacity/scale), not scroll-
- * *jacking*: native scroll input is never intercepted, captured, or
- * overridden — the design system's existing "no scroll-jacking" rule
- * (§7) still holds. Desktop gets the sticky/pinned treatment; below `lg`
- * it degrades to a plain stacked fade-in-on-view list — no sticky
- * pinning on mobile, per the brief's own "mobile must remain simple."
+ * Desktop ties the active row to scroll position (a tall sticky container,
+ * Framer reading `scrollYProgress` — scroll-*linked*, never intercepted:
+ * native scroll always wins, satisfying the "no scroll-jacking" rule) but
+ * a row can also be *clicked*, which smooth-scrolls the page to that row's
+ * slice of the tall container. Below `lg` there's no sticky pinning at
+ * all — a plain stacked list, each row fully visible in normal flow.
  */
 export function ScrollStory({
   eyebrow,
@@ -37,7 +42,7 @@ export function ScrollStory({
   eyebrow: string;
   heading: string;
   items: ScrollStoryItem[];
-  /** A vertical, scroll-lit progress rail beside the text (Methodology's "guided process" framing). */
+  /** A connecting line down the number column, illuminating as each stage is reached ("guided process" framing). */
   showProgressPath?: boolean;
 }) {
   return (
@@ -46,12 +51,10 @@ export function ScrollStory({
         <SectionHeading eyebrow={eyebrow} heading={heading} />
       </Container>
 
-      {/* Desktop / tablet-landscape: sticky scroll story. */}
-      <div className="mt-2 hidden lg:block">
+      <div className="mt-10 hidden lg:block">
         <DesktopScrollStory items={items} showProgressPath={showProgressPath} />
       </div>
 
-      {/* Mobile / tablet: simple stacked reveal, no sticky pinning. */}
       <Container className="mt-8 lg:hidden">
         <MobileStackedStory items={items} />
       </Container>
@@ -71,14 +74,32 @@ function SectionHeading({ eyebrow, heading }: { eyebrow: string; heading: string
 function DesktopScrollStory({ items, showProgressPath }: { items: ScrollStoryItem[]; showProgressPath: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Reduced motion: skip the pinned mechanism entirely and just stack the
-  // items normally (still inside the same tall container, so no layout
-  // jump versus the animated version — just no motion).
+  const n = items.length;
+
+  const rawIndex = useTransform(scrollYProgress, [0, 1], [0, n - 0.001]);
+  const discreteIndex = useTransform(rawIndex, (v) => Math.min(n - 1, Math.max(0, Math.floor(v))));
+  useMotionValueEvent(discreteIndex, "change", (value) => setActiveIndex(value));
+
+  const handleSelect = useCallback(
+    (index: number) => {
+      const el = containerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const containerTop = rect.top + window.scrollY;
+      const scrollable = Math.max(0, el.offsetHeight - window.innerHeight);
+      const targetProgress = (index + 0.5) / n;
+      const targetY = containerTop + scrollable * targetProgress;
+      window.scrollTo({ top: targetY, behavior: prefersReducedMotion ? "auto" : "smooth" });
+    },
+    [n, prefersReducedMotion]
+  );
+
   if (prefersReducedMotion) {
     return (
       <Container className="flex flex-col gap-10 py-10">
@@ -89,18 +110,42 @@ function DesktopScrollStory({ items, showProgressPath }: { items: ScrollStoryIte
     );
   }
 
-  const n = items.length;
-
   return (
-    <div ref={containerRef} style={{ height: `${n * 52}vh` }} className="relative">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <Container className="relative w-full">
-          <div className={cn("relative flex w-full items-center gap-10", showProgressPath && "pl-6")}>
-            {showProgressPath ? <ProgressPath count={n} scrollYProgress={scrollYProgress} /> : null}
-            <div className="relative h-[46vh] min-h-80 flex-1">
+    <div ref={containerRef} style={{ height: `${n * 46}vh` }} className="relative">
+      <div className="sticky top-0 flex h-screen items-center">
+        <Container className="w-full">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(260px,340px)_1fr] lg:gap-16">
+            <ol className={cn("relative flex flex-col", showProgressPath && "pl-6")}>
+              {showProgressPath ? <ProgressLine scrollYProgress={scrollYProgress} /> : null}
               {items.map((item, i) => (
-                <StoryItemAnimated key={item.step} item={item} index={i} count={n} scrollYProgress={scrollYProgress} />
+                <StoryListRow
+                  key={item.step}
+                  item={item}
+                  isActive={i === activeIndex}
+                  isPassed={i < activeIndex}
+                  onSelect={() => handleSelect(i)}
+                />
               ))}
+            </ol>
+
+            <div className="relative min-h-72">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.4, ease: EASE }}
+                  className="grid grid-cols-1 items-center gap-6 sm:grid-cols-[1fr_1fr]"
+                >
+                  <p className="text-base text-muted-foreground sm:text-lg">{items[activeIndex].description}</p>
+                  <StageVisual
+                    variant={items[activeIndex].visual}
+                    active
+                    className="hidden aspect-[11/8] w-full sm:block"
+                  />
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         </Container>
@@ -109,92 +154,59 @@ function DesktopScrollStory({ items, showProgressPath }: { items: ScrollStoryIte
   );
 }
 
-function ProgressPath({ count, scrollYProgress }: { count: number; scrollYProgress: MotionValue<number> }) {
+function StoryListRow({
+  item,
+  isActive,
+  isPassed,
+  onSelect,
+}: {
+  item: ScrollStoryItem;
+  isActive: boolean;
+  isPassed: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <li className="relative">
+      <button
+        type="button"
+        onClick={onSelect}
+        aria-current={isActive ? "true" : undefined}
+        className={cn(
+          "group flex w-full items-baseline gap-4 rounded-sm py-3.5 text-left outline-none",
+          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        )}
+      >
+        <span
+          className={cn(
+            "font-mono text-xs tabular-nums transition-colors duration-300",
+            isActive ? "text-brand-accent" : isPassed ? "text-brand-accent/45" : "text-muted-foreground"
+          )}
+        >
+          {item.step}
+        </span>
+        <span
+          className={cn(
+            "font-display text-xl font-medium transition-all duration-300 sm:text-2xl",
+            isActive ? "text-foreground" : "text-muted-foreground/70 group-hover:text-muted-foreground"
+          )}
+        >
+          {item.title}
+        </span>
+      </button>
+    </li>
+  );
+}
+
+function ProgressLine({ scrollYProgress }: { scrollYProgress: MotionValue<number> }) {
   const fillHeight = useTransform(scrollYProgress, [0, 1], ["2%", "100%"]);
 
   return (
-    <div className="relative hidden h-[46vh] min-h-80 w-px shrink-0 bg-border sm:block">
+    <div className="absolute top-3 bottom-3 left-0 w-px bg-border" aria-hidden="true">
       <motion.div
         className="absolute top-0 left-0 w-px bg-brand-accent shadow-[0_0_8px_var(--brand-glow)]"
         style={{ height: fillHeight }}
       />
-      {Array.from({ length: count }).map((_, i) => (
-        <ProgressDot key={i} at={count === 1 ? 0 : i / (count - 1)} scrollYProgress={scrollYProgress} />
-      ))}
     </div>
-  );
-}
-
-/** Split out so `useTransform` runs at this component's own top level, not inside the parent's `.map()` (Rules of Hooks). */
-function ProgressDot({ at, scrollYProgress }: { at: number; scrollYProgress: MotionValue<number> }) {
-  const opacity = useTransform(scrollYProgress, [Math.max(0, at - 0.08), at], [0.3, 1]);
-  return (
-    <motion.span
-      className="absolute -left-[3px] size-[7px] rounded-full bg-brand-accent"
-      style={{ top: `${at * 100}%`, opacity }}
-    />
-  );
-}
-
-function StoryItemAnimated({
-  item,
-  index,
-  count,
-  scrollYProgress,
-}: {
-  item: ScrollStoryItem;
-  index: number;
-  count: number;
-  scrollYProgress: MotionValue<number>;
-}) {
-  const slice = 1 / count;
-  const start = index * slice;
-  const peakStart = start + slice * 0.15;
-  const peakEnd = start + slice * 0.85;
-  const end = start + slice;
-
-  // Higher floor (0.38, not near-zero) so inactive stages stay legibly
-  // "quieter," never blurred into looking broken — a wider peak plateau
-  // (70% of each slice) so the active stage settles in and stays sharp
-  // sooner rather than only for an instant mid-scroll.
-  const opacity = useTransform(
-    scrollYProgress,
-    [Math.max(0, start - slice * 0.25), start, peakStart, peakEnd, end, Math.min(1, end + slice * 0.25)],
-    [0.38, 0.5, 1, 1, 0.5, 0.38]
-  );
-  const scale = useTransform(scrollYProgress, [start, peakStart, peakEnd, end], [0.97, 1, 1, 0.97]);
-  const y = useTransform(scrollYProgress, [start, peakStart, peakEnd, end], [16, 0, 0, -16]);
-  const blur = useTransform(
-    scrollYProgress,
-    [Math.max(0, start - slice * 0.25), start, peakStart, peakEnd, end, Math.min(1, end + slice * 0.25)],
-    [1.5, 0.8, 0, 0, 0.8, 1.5]
-  );
-  const filter = useTransform(blur, (b) => `blur(${b}px)`);
-
-  // `useTransform` alone returns a MotionValue, which updates the DOM
-  // directly and does *not* trigger a React re-render — fine for style
-  // bindings, not enough for `StageVisual`'s `active` prop, which decides
-  // which `animate` target to use. `useMotionValueEvent` mirrors the
-  // derived boolean into real state so the visual actually reacts as the
-  // user scrolls; it only fires at the two slice boundaries per item
-  // (entering/leaving "active"), not on every scroll tick, so this stays
-  // cheap.
-  const activeMotionValue = useTransform(scrollYProgress, (p) => p >= start && p < end);
-  const [isActive, setIsActive] = useState(activeMotionValue.get());
-  useMotionValueEvent(activeMotionValue, "change", (value) => setIsActive(value));
-
-  return (
-    <motion.div
-      style={{ opacity, scale, y, filter }}
-      className="absolute inset-0 grid grid-cols-1 items-center gap-8 sm:grid-cols-[1.1fr_0.9fr]"
-    >
-      <div className="flex flex-col items-start gap-3">
-        <span className="font-mono text-xs tracking-[0.18em] text-brand-accent uppercase">{item.step}</span>
-        <h3 className="font-display text-4xl font-medium text-balance sm:text-5xl">{item.title}</h3>
-        <p className="max-w-lg text-base text-muted-foreground sm:text-lg">{item.description}</p>
-      </div>
-      <StageVisual variant={item.visual} active={isActive} className="hidden aspect-[11/8] w-full sm:block" />
-    </motion.div>
   );
 }
 
@@ -206,7 +218,6 @@ function StoryItemStatic({ item }: { item: ScrollStoryItem }) {
         <h3 className="font-display text-3xl font-medium">{item.title}</h3>
         <p className="max-w-lg text-base text-muted-foreground">{item.description}</p>
       </div>
-      {/* Reduced motion means less motion, not less content — the settled (non-animating) frame of the same visual. */}
       <StageVisual variant={item.visual} active={false} className="hidden aspect-[11/8] w-full sm:block" />
     </div>
   );
@@ -223,7 +234,7 @@ function MobileStackedStory({ items }: { items: ScrollStoryItem[] }) {
           initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
           whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: prefersReducedMotion ? 0.01 : 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: prefersReducedMotion ? 0.01 : 0.5, ease: EASE }}
           className={cn("flex flex-col gap-2 border-l-2 border-border py-1 pl-5")}
         >
           <span className="font-mono text-xs tracking-[0.18em] text-brand-accent uppercase">{item.step}</span>

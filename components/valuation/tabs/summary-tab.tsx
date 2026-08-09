@@ -31,7 +31,11 @@ export function SummaryTab() {
     <div className="flex flex-col gap-10">
       <div>
         <p className="font-mono text-xs text-muted-foreground">08 — Valuation Summary</p>
-        <p className="mt-2 font-mono text-xs tracking-wide text-muted-foreground uppercase">
+        <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+          Where the DCF, scenarios, sensitivity, and trading comps come together into one view of
+          what the company is worth.
+        </p>
+        <p className="mt-4 font-mono text-xs tracking-wide text-muted-foreground uppercase">
           {record.meta.ticker} &middot; Base fair value
         </p>
         <p className="mt-1 font-display text-5xl font-medium text-brand-accent tabular-nums sm:text-6xl">

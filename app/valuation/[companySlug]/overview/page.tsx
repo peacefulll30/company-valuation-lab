@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { OverviewTab } from "@/components/valuation/tabs/overview-tab";
+import { WorkspaceJourney } from "@/components/valuation/workspace-journey";
 
 export const metadata: Metadata = { title: "Overview — Company Valuation Lab" };
 
 export default function OverviewPage() {
-  return <OverviewTab />;
+  return <WorkspaceJourney initialSlug="overview" />;
 }

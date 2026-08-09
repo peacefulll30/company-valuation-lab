@@ -122,18 +122,22 @@
 }
 
 /*
-  Dark mode is explicitly out of scope for the in-app workspace (V1;
-  Research §21: opportunistic, not core) — no theme toggle exists there.
-  This block is used exclusively by the marketing shell (`/` and
-  `/valuation` — Design spec §2), tuned specifically for that cinematic,
-  institutional-finance direction — genuinely near-black, not a generic
-  "invert the light palette" pass. A future in-app dark mode may want its
-  own tuning rather than assuming these exact values are right for a
-  dense data tool; re-check before reusing them there.
+  V1.2: this block now applies across the whole product, not just the
+  marketing shell. It started as marketing-only (`/` and `/valuation`),
+  tuned for a cinematic, institutional-finance direction — genuinely
+  near-black, not a generic "invert the light palette" pass — and was
+  later extended into the analysis workspace itself (`/valuation/
+  [companySlug]/*`, applied in that route's `layout.tsx`) once every
+  workspace component was confirmed to use semantic tokens exclusively
+  (`bg-card`, `text-foreground`, `var(--chart-1..5)`, …), so no
+  per-component changes were needed to re-theme it. There is still no
+  user-facing light/dark toggle — the whole app is dark by design.
 
   Contrast re-verified against these exact values (WCAG AA, 4.5:1 text):
   foreground/background 18.4:1, muted-foreground/background 7.8:1,
-  brand-accent/background 7.8:1 — see the QA note in the Design spec §2.
+  brand-accent/background 7.8:1, card-foreground/card 17.0:1,
+  muted-foreground/card 7.2:1 (dense tables/cards) — see the QA note in
+  the Design spec §2.
 */
 .dark {
   --background: #08090b;
@@ -207,5 +211,36 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+/*
+  The "Company Valuation Lab" wordmark's restrained periodic shimmer
+  (brief §10) — a brass band sweeps across the text once, then the
+  animation sits idle for the rest of a long (9s) cycle before repeating,
+  rather than looping continuously. Pure CSS (no Framer/JS) so the top bar
+  stays a server component. Falls back to a plain solid-color wordmark
+  wherever `background-clip: text` isn't supported, so the text is never
+  at risk of rendering invisible.
+*/
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .brand-wordmark-shimmer {
+    background-image: linear-gradient(100deg, var(--foreground) 30%, var(--brand-glow, var(--brand-accent)) 45%, var(--foreground) 60%);
+    background-size: 250% 100%;
+    background-position: 200% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: brand-wordmark-sweep 9s ease-in-out infinite;
+  }
+}
+
+@keyframes brand-wordmark-sweep {
+  0% {
+    background-position: 200% 0;
+  }
+  14%,
+  100% {
+    background-position: -50% 0;
   }
 }
