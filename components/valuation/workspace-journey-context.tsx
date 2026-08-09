@@ -22,10 +22,12 @@ const WorkspaceJourneyContext = createContext<WorkspaceJourneyContextValue | nul
  * provider is the shared source of truth for "which one is active" so the
  * sidebar (a sibling of the scrollable content, not an ancestor/descendant
  * of it) can stay in sync — via a real IntersectionObserver watching a
- * thin band near the top of the viewport, never by intercepting scroll
- * input. Sidebar clicks call `scrollToSection`, which is a plain
- * `scrollIntoView` — normal, interruptible browser scrolling the whole
- * way, not a hijacked/animated takeover.
+ * thin band near the top of the viewport, plus a passive "at the bottom of
+ * the page" scroll check that guarantees the last section (which has no
+ * trailing content to pull it into that band) still becomes active — never
+ * by intercepting scroll input. Sidebar clicks call `scrollToSection`,
+ * which is a plain `scrollIntoView` — normal, interruptible browser
+ * scrolling the whole way, not a hijacked/animated takeover.
  */
 export function WorkspaceJourneyProvider({ companySlug, children }: { companySlug: string; children: ReactNode }) {
   const [activeSlug, setActiveSlug] = useState<WorkspaceSectionSlug>(workspaceSections[0].slug);
@@ -72,7 +74,44 @@ export function WorkspaceJourneyProvider({ companySlug, children }: { companySlu
     );
 
     for (const el of sectionsRef.current.values()) observer.observe(el);
-    return () => observer.disconnect();
+
+    // The band above sits high in the viewport (roughly its top 12%-28%).
+    // That works for every section that has more content scrolling in
+    // beneath it — but the LAST section has nothing after it, so once the
+    // page hits its maximum scroll position, that section's top edge may
+    // never actually reach down into the band (whenever the section itself
+    // is shorter than the trailing scroll distance the band needs). The
+    // indicator would then stay stuck on whatever section last legitimately
+    // crossed the band and never advance to AI Analyst — the reported bug.
+    // A cheap, passive "are we at the bottom of the page" check closes that
+    // gap without replacing the band logic (which is correct everywhere
+    // else) and without touching scroll behavior itself.
+    const lastSlug = workspaceSections[workspaceSections.length - 1].slug;
+    let ticking = false;
+    function checkBottom() {
+      ticking = false;
+      const scrollHeight = document.documentElement.scrollHeight;
+      // Only meaningful once the page actually scrolls — on a page short
+      // enough to fit in one viewport there's no "bottom" to distinguish
+      // from "top," and the band observer's own result should stand.
+      const canScroll = scrollHeight > window.innerHeight;
+      const atBottom = canScroll && window.innerHeight + window.scrollY >= scrollHeight - 2;
+      if (atBottom) setActiveSlug(lastSlug);
+    }
+    function handleScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(checkBottom);
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    checkBottom();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
