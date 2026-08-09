@@ -56,6 +56,7 @@
   /* Brand accent — used ONLY for the primary CTA and the one "answer" figure
      per screen (Design spec §1). Not a general-purpose UI color. */
   --color-brand-accent: var(--brand-accent);
+  --color-brand-glow: var(--brand-glow, var(--brand-accent));
   --color-brand-hairline: var(--brand-hairline);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -121,47 +122,60 @@
 }
 
 /*
-  Dark mode is explicitly out of scope for V1 (Research §21: opportunistic,
-  not core) and no theme toggle is wired up in Phase 1 — this block is inert
-  until a future phase adds one. Values below are a direct, minimal inversion
-  preserving the same hue relationships, per the Design spec's brief dark-mode
-  principles (§7) — not a full dark-mode design pass.
+  Dark mode is explicitly out of scope for the in-app workspace (V1;
+  Research §21: opportunistic, not core) — no theme toggle exists there.
+  This block is used exclusively by the marketing shell (`/` and
+  `/valuation` — Design spec §2), tuned specifically for that cinematic,
+  institutional-finance direction — genuinely near-black, not a generic
+  "invert the light palette" pass. A future in-app dark mode may want its
+  own tuning rather than assuming these exact values are right for a
+  dense data tool; re-check before reusing them there.
+
+  Contrast re-verified against these exact values (WCAG AA, 4.5:1 text):
+  foreground/background 18.4:1, muted-foreground/background 7.8:1,
+  brand-accent/background 7.8:1 — see the QA note in the Design spec §2.
 */
 .dark {
-  --background: #14171f;
-  --foreground: #f7f5f1;
-  --card: #1b1f2a;
-  --card-foreground: #f7f5f1;
-  --popover: #1b1f2a;
-  --popover-foreground: #f7f5f1;
-  --primary: #f7f5f1;
-  --primary-foreground: #14171f;
-  --secondary: #232838;
-  --secondary-foreground: #f7f5f1;
-  --muted: #232838;
-  --muted-foreground: #9aa3b2;
-  --accent: #232838;
-  --accent-foreground: #f7f5f1;
-  --destructive: #c65a41;
-  --destructive-foreground: #14171f;
-  --border: rgba(247, 245, 241, 0.12);
-  --input: rgba(247, 245, 241, 0.16);
-  --ring: #c99a4e;
+  --background: #08090b;
+  --foreground: #f5f6f8;
+  --card: #131417;
+  --card-foreground: #f5f6f8;
+  --popover: #16181c;
+  --popover-foreground: #f5f6f8;
+  /* Graphite surface + white label, not an inverted paper block — the
+     resting state every dark-shell button/primary surface reads as. */
+  --primary: #17181c;
+  --primary-foreground: #f5f6f8;
+  --secondary: #1a1b20;
+  --secondary-foreground: #f5f6f8;
+  --muted: #1a1b20;
+  --muted-foreground: #9ba3af;
+  --accent: #1e2025;
+  --accent-foreground: #f5f6f8;
+  --destructive: #d1684c;
+  --destructive-foreground: #08090b;
+  --border: rgba(245, 246, 248, 0.08);
+  --input: rgba(245, 246, 248, 0.14);
+  --ring: #d4a552;
   --chart-1: #5878b8;
   --chart-2: #ba8a3e;
   --chart-3: #2e9c86;
   --chart-4: #c05a3a;
   --chart-5: #1f9a78;
-  --sidebar: #171b26;
-  --sidebar-foreground: #f7f5f1;
-  --sidebar-primary: #f7f5f1;
-  --sidebar-primary-foreground: #14171f;
-  --sidebar-accent: #232838;
-  --sidebar-accent-foreground: #f7f5f1;
-  --sidebar-border: rgba(247, 245, 241, 0.12);
-  --sidebar-ring: #c99a4e;
+  --sidebar: #0e0f12;
+  --sidebar-foreground: #f5f6f8;
+  --sidebar-primary: #f5f6f8;
+  --sidebar-primary-foreground: #08090b;
+  --sidebar-accent: #1a1b20;
+  --sidebar-accent-foreground: #f5f6f8;
+  --sidebar-border: rgba(245, 246, 248, 0.08);
+  --sidebar-ring: #d4a552;
   --brand-accent: #c99a4e;
-  --brand-hairline: rgba(247, 245, 241, 0.12);
+  /* Brighter tint of the same brass hue, used only for glow/sweep/light
+     effects (radial highlights, hover sweeps) — never a flat fill, so it
+     doesn't become a second "accent color" (§1's "one accent" rule). */
+  --brand-glow: #e8c077;
+  --brand-hairline: rgba(245, 246, 248, 0.08);
 }
 
 @layer base {

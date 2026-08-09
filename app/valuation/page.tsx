@@ -3,6 +3,7 @@ import { Container } from "@/components/brand/container";
 import { AppTopBar } from "@/components/valuation/app-top-bar";
 import { CompanySearch } from "@/components/valuation/company-search";
 import { FeaturedCompanies } from "@/components/valuation/featured-companies";
+import { AmbientField } from "@/components/marketing/ambient-field";
 import { SiteFooter } from "@/components/marketing/site-footer";
 
 export const metadata: Metadata = {
@@ -19,11 +20,12 @@ export default function CompanySelectionPage() {
   return (
     <div className="dark flex min-h-full flex-1 flex-col bg-background text-foreground">
       <AppTopBar />
-      <main id="main-content" className="flex-1 py-16 sm:py-24">
+      <main id="main-content" className="relative flex-1 overflow-hidden py-16 sm:py-24">
+        <AmbientField className="pointer-events-none absolute inset-0 -z-10" />
         <Container className="flex flex-col gap-14">
           <div className="max-w-2xl">
             <p className="font-mono text-xs tracking-[0.18em] text-muted-foreground uppercase">Start valuation</p>
-            <h1 className="mt-3 font-display text-4xl font-medium text-balance sm:text-5xl">
+            <h1 className="mt-3 font-display text-5xl font-medium text-balance sm:text-6xl">
               Select a company
             </h1>
             <p className="mt-4 text-base text-muted-foreground sm:text-lg">

@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/brand/container";
+import { RangeBracket } from "@/components/brand/range-bracket";
+import { AmbientField } from "@/components/marketing/ambient-field";
+import { IlluminatedButton } from "@/components/marketing/illuminated-button";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
-const CTA_INK = "#14171f";
-const TRANSITION_MS = 820;
+const TRANSITION_MS = 780;
 
 // Fixed angles (not random) for the dispersion burst — this only ever
 // mounts client-side after a click, so hydration isn't the concern; the
@@ -17,16 +18,16 @@ const TRANSITION_MS = 820;
 const BURST_ANGLES = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330];
 
 /**
- * The landing page's closing moment (Design spec §2): a large "Ready to
- * value a company?" CTA that, on activation, plays a short (~800ms)
- * dispersion transition and a calm "Enjoy the analysis." beat before
- * routing into `/valuation` — never a substitute for real loading state,
- * purely a felt-quality moment on top of an already-fast navigation.
+ * The landing page's real finale (Design spec §2, brief §7) — a
+ * full-screen cinematic close, not a cramped afterthought section. On
+ * activation it plays a short (<1s) brass dispersion and a calm "Enjoy
+ * the analysis." beat before routing into `/valuation` — never a
+ * substitute for real loading state, purely a felt-quality moment on top
+ * of an already-fast navigation.
  */
 export function FinalCta() {
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
-  const [active, setActive] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
 
   function handleActivate() {
@@ -39,51 +40,24 @@ export function FinalCta() {
   }
 
   return (
-    <section className="relative overflow-hidden py-32 sm:py-40">
+    <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden py-24">
+      <AmbientField className="pointer-events-none absolute inset-0 -z-10" />
+      <RangeBracket
+        width={520}
+        tickHeight={64}
+        className="pointer-events-none absolute top-1/2 left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 text-brand-accent/[0.07]"
+      />
+
       <Container className="flex flex-col items-center gap-10 text-center">
-        <h2 className="max-w-2xl font-display text-4xl font-medium text-balance sm:text-5xl lg:text-6xl">
+        <p className="font-mono text-xs tracking-[0.28em] text-brand-accent uppercase">
+          The model is ready
+        </p>
+        <h2 className="max-w-3xl font-display text-5xl font-medium text-balance sm:text-6xl lg:text-7xl">
           Ready to value a company?
         </h2>
-        <button
-          type="button"
-          onClick={handleActivate}
-          onMouseEnter={() => setActive(true)}
-          onMouseLeave={() => setActive(false)}
-          onFocus={() => setActive(true)}
-          onBlur={() => setActive(false)}
-          disabled={transitioning}
-          className="group relative isolate inline-flex h-14 items-center rounded-md border border-primary bg-primary px-9 text-sm font-medium tracking-[0.14em] uppercase outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-90"
-        >
-          <motion.span
-            className="absolute inset-0 -z-10 rounded-[inherit] bg-brand-accent"
-            initial={false}
-            animate={{ x: active || transitioning ? "0%" : "-101%" }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.18, ease: EASE }}
-            aria-hidden="true"
-          />
-          <motion.span
-            className="inline-flex items-center"
-            initial={false}
-            animate={{ x: active || transitioning ? -6 : 0, color: CTA_INK }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.18, ease: EASE }}
-          >
-            Start Valuation
-          </motion.span>
-          <motion.span
-            className="inline-flex items-center justify-end overflow-hidden"
-            initial={false}
-            animate={{
-              width: active || transitioning ? 22 : 0,
-              marginLeft: active || transitioning ? 10 : 0,
-              opacity: active || transitioning ? 1 : 0,
-              color: CTA_INK,
-            }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.18, ease: EASE }}
-            aria-hidden="true"
-          >
-            <ArrowRight className="size-4 shrink-0" />
-          </motion.span>
-        </button>
+        <IlluminatedButton onClick={handleActivate} disabled={transitioning} size="lg" className="mt-2 px-10 uppercase">
+          Start Valuation
+        </IlluminatedButton>
       </Container>
 
       <AnimatePresence>
@@ -120,7 +94,7 @@ function DispersionBurst() {
             opacity: 0,
             scale: 0.4,
           }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, ease: EASE }}
         />
       ))}
     </div>

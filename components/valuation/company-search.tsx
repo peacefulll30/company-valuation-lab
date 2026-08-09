@@ -84,7 +84,7 @@ export function CompanySearch() {
             }}
             placeholder="Search by company name or ticker"
             aria-label="Search by company name or ticker"
-            className="h-12 rounded-lg border-border/80 bg-card pl-11 text-base shadow-none focus-visible:border-brand-accent/60 focus-visible:ring-brand-accent/20"
+            className="h-12 rounded-lg border-white/10 bg-card pl-11 text-base shadow-none transition-shadow duration-300 focus-visible:border-brand-accent/60 focus-visible:ring-brand-accent/20 focus-visible:shadow-[0_0_24px_-8px_var(--brand-glow)]"
             disabled={isLoading}
           />
         </div>
