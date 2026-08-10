@@ -73,10 +73,14 @@ export function SummaryTab() {
         </div>
 
         <div>
-          <FootballFieldChart ranges={[{ label: "DCF", low, base: dcf.impliedSharePrice, high }]} />
+          <FootballFieldChart
+            ranges={[{ label: "DCF", low, base: dcf.impliedSharePrice, high }]}
+            currentPrice={currentPrice?.value ?? null}
+          />
           <p className="-mt-6 text-xs text-muted-foreground">
-            Comps-implied range and a current-price marker aren&apos;t shown — Trading Comps isn&apos;t
-            available yet for this company (see the Trading Comps tab).
+            {currentPrice
+              ? "The comps-implied range isn't shown — Trading Comps isn't available yet for this company (see the Trading Comps tab). The DCF range and today's market price are independent of that and stay visible above."
+              : "Comps-implied range and a current-price marker aren't shown — Trading Comps and a live price are both unavailable yet for this company (see the Trading Comps tab and Overview)."}
           </p>
         </div>
       </Reveal>

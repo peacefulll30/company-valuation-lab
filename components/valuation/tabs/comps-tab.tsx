@@ -28,7 +28,8 @@ export function CompsTab() {
           </p>
           <p className="mt-2 max-w-xl text-sm text-muted-foreground">
             Trading multiples (EV/Revenue, EV/EBITDA, P/E) are built on market price — for {record.meta.ticker}
-            and every peer. {hasPrice ? `${record.meta.ticker}'s current price is available (see Overview), but a` : "Current price is unavailable (see Overview), and a"}{" "}
+            {" "}and every peer.{" "}
+            {hasPrice ? `${record.meta.ticker}'s current price is available (see Overview), but a` : "Current price is unavailable (see Overview), and a"}{" "}
             hand-curated peer set for {record.meta.ticker} hasn&apos;t been assembled yet. Rather than compute
             a multiple from a missing or fabricated price, this section stays empty until both are in place.
           </p>
