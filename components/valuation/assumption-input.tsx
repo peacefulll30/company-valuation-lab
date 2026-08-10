@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useId, type ReactNode } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { ConceptInfo } from "@/components/valuation/concept-info";
@@ -18,6 +18,8 @@ type AssumptionInputProps = {
   sourceTag?: string;
   /** Renders a "What is this?" popover next to the label — only where the term itself needs explaining (e.g. WACC). */
   concept?: ConceptKey;
+  /** Small status indicator next to the label — e.g. WACC's AUTO/MANUAL badge. */
+  badge?: ReactNode;
 };
 
 /** Mandatory-assumption pattern (Design spec §4/§3.x Forecast): a slider synced with a numeric field, both in %. */
@@ -30,6 +32,7 @@ export function AssumptionInput({
   step = 0.001,
   sourceTag,
   concept,
+  badge,
 }: AssumptionInputProps) {
   const inputId = useId();
   const percentValue = Math.round(value * 1000) / 10; // one decimal place, in %
@@ -52,6 +55,7 @@ export function AssumptionInput({
             {label}
           </label>
           {concept ? <ConceptInfo concept={concept} /> : null}
+          {badge}
         </div>
         <div className="flex items-center gap-1">
           <Input

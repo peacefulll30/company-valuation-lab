@@ -1,7 +1,7 @@
 "use client";
 
 import { useValuationWorkspace } from "@/lib/featured/ValuationWorkspaceContext";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatPercent } from "@/lib/format";
 import { RangeBracket } from "@/components/brand/range-bracket";
 import { Reveal } from "@/components/valuation/reveal";
 import { FootballFieldChart } from "@/components/charts/football-field-chart";
@@ -27,6 +27,8 @@ export function SummaryTab() {
   const prices = [scenarios.bear.impliedSharePrice, scenarios.base.impliedSharePrice, scenarios.bull.impliedSharePrice];
   const low = Math.min(...prices);
   const high = Math.max(...prices);
+  const currentPrice = record.financials.currentPrice;
+  const upsideDownside = currentPrice ? (dcf.impliedSharePrice - currentPrice.value) / currentPrice.value : null;
 
   return (
     <div className="flex flex-col gap-10">
@@ -59,7 +61,14 @@ export function SummaryTab() {
           </div>
           <div className="rounded-md border border-border bg-card p-4">
             <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Upside / downside vs. price</p>
-            <p className="mt-1 text-sm text-muted-foreground">Not available &mdash; current price unavailable</p>
+            {upsideDownside !== null ? (
+              <p className={upsideDownside >= 0 ? "mt-1 text-xl font-semibold tabular-nums text-chart-5" : "mt-1 text-xl font-semibold tabular-nums text-chart-4"}>
+                {upsideDownside >= 0 ? "+" : ""}
+                {formatPercent(upsideDownside)}
+              </p>
+            ) : (
+              <p className="mt-1 text-sm text-muted-foreground">Not available &mdash; current price unavailable</p>
+            )}
           </div>
         </div>
 

@@ -7,6 +7,8 @@ import { getFeaturedCompany, featuredSlugs } from "@/lib/featured";
 import { buildDefaultAssumptions } from "@/lib/featured/defaultAssumptions";
 import { ValuationWorkspaceProvider } from "@/lib/featured/ValuationWorkspaceContext";
 import { resolveWorkspaceCompany } from "@/lib/data/workspaceCompany";
+import type { CompanyWorkspaceRecord } from "@/lib/data/types";
+import { fetchQuote } from "@/lib/market/twelveData";
 
 export function generateStaticParams() {
   return featuredSlugs.map((companySlug) => ({ companySlug }));
@@ -64,11 +66,40 @@ export default async function CompanyWorkspaceLayout({
   }
 
   const { record } = resolution;
-  const { assumptions, waccExplanation } = buildDefaultAssumptions(record.financials);
+
+  // Fetched here (server-side, ISR-cached inside `fetchQuote` — see its own
+  // comment) rather than client-side: this value feeds the WACC weighting
+  // below, which must be resolved before `assumptions` is built, and the
+  // Overview tab reads it straight off `record` via the shared workspace
+  // context rather than re-fetching. Never fabricated: `null` on any
+  // failure, which every consumer treats as "unavailable," not a guess.
+  const priceResult = await fetchQuote(record.meta.ticker);
+  const currentPrice = priceResult.status === "ok" ? priceResult.quote : null;
+
+  const recordWithPrice: CompanyWorkspaceRecord = currentPrice
+    ? {
+        ...record,
+        financials: {
+          ...record.financials,
+          currentPrice: { value: currentPrice.price, source: currentPrice.source, asOf: currentPrice.asOf },
+        },
+      }
+    : record;
+
+  const { assumptions, waccExplanation, taxRateExplanation } = buildDefaultAssumptions(
+    recordWithPrice.financials,
+    currentPrice
+  );
 
   return (
     <div className="dark flex min-h-full flex-1 flex-col bg-background text-foreground">
-      <ValuationWorkspaceProvider record={record} defaultAssumptions={assumptions} waccExplanation={waccExplanation}>
+      <ValuationWorkspaceProvider
+        record={recordWithPrice}
+        defaultAssumptions={assumptions}
+        waccExplanation={waccExplanation}
+        taxRateExplanation={taxRateExplanation}
+        initialQuote={priceResult}
+      >
         <div className="flex min-h-full flex-1 flex-col">
           <AppTopBar />
           <CompanyContextHeaderLive companySlug={companySlug} />

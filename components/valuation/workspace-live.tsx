@@ -6,11 +6,13 @@ import { FairValuePanel } from "@/components/valuation/fair-value-panel";
 
 /** Client wrapper: reads the live workspace context and feeds real data into the presentational header. */
 export function CompanyContextHeaderLive({ companySlug }: { companySlug: string }) {
-  const { record } = useValuationWorkspace();
+  const { record, initialQuote, updateWaccFromPrice } = useValuationWorkspace();
   return (
     <CompanyContextHeader
       companySlug={companySlug}
       data={{ ticker: record.meta.ticker, name: record.meta.name, tier: record.meta.tier }}
+      initialQuote={initialQuote}
+      onQuoteChange={updateWaccFromPrice}
     />
   );
 }

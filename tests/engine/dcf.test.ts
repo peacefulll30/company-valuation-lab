@@ -116,6 +116,31 @@ describe("runDcf — zero/invalid diluted shares", () => {
   });
 });
 
+describe("runDcf — eligible cash-like investments (marketable securities)", () => {
+  it("nets cash-like investments into Net Debt when the base year provides them, and flags it", () => {
+    const company: CompanyFinancials = {
+      historicals: [{ ...flatHistoricals[0], cashLikeInvestments: sourced(100) }],
+      currentPrice: null,
+    };
+    const withCashLike = runDcf(company, flatAssumptions);
+    const baseline = runDcf(flatCompany, flatAssumptions);
+
+    // Same EV either way — only the bridge below EV changes.
+    expect(withCashLike.enterpriseValue).toBeCloseTo(baseline.enterpriseValue, 6);
+    // netDebt = totalDebt(200) - cash(50) - cashLikeInvestments(100) = 50, vs baseline's 150.
+    expect(withCashLike.netDebt).toBeCloseTo(50, 8);
+    expect(withCashLike.equityValue).toBeCloseTo(baseline.equityValue + 100, 6);
+    expect(withCashLike.impliedSharePrice).toBeCloseTo(baseline.impliedSharePrice + 1, 6);
+    expect(withCashLike.cashLikeInvestmentsIncluded).toBe(true);
+  });
+
+  it("excludes (never zeroes) cash-like investments when the base year doesn't provide them", () => {
+    const result = runDcf(flatCompany, flatAssumptions); // flatHistoricals[0].cashLikeInvestments is null
+    expect(result.cashLikeInvestmentsIncluded).toBe(false);
+    expect(result.netDebt).toBeCloseTo(150, 8); // unaffected — same as the original Total Debt - Cash
+  });
+});
+
 describe("runDcf — missing required data never defaults to 0", () => {
   it("throws MissingRequiredFieldError when a required historical field is not a finite number", () => {
     const company: CompanyFinancials = {

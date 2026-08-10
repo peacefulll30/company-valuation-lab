@@ -42,13 +42,16 @@ describe("getSearchRateLimiter / getAnalystRateLimiter — environment validatio
     process.env.UPSTASH_REDIS_REST_TOKEN = "test-token";
     vi.resetModules();
 
-    const { getSearchRateLimiter, getAnalystRateLimiter } = await import("@/lib/rateLimit");
+    const { getSearchRateLimiter, getAnalystRateLimiter, getMarketRateLimiter } = await import("@/lib/rateLimit");
     const search = getSearchRateLimiter();
     const analyst = getAnalystRateLimiter();
+    const market = getMarketRateLimiter();
     expect(search).not.toBeNull();
     expect(analyst).not.toBeNull();
+    expect(market).not.toBeNull();
     expect(typeof search?.limit).toBe("function");
     expect(typeof analyst?.limit).toBe("function");
+    expect(typeof market?.limit).toBe("function");
   });
 });
 

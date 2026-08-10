@@ -24,6 +24,7 @@ export const sampleHistoricals: FinancialLineItems[] = [
     operatingCashFlow: sourced(220),
     capex: sourced(60),
     deltaNWC: sourced(10),
+    cashLikeInvestments: null,
   },
   {
     fiscalYear: 2023,
@@ -38,6 +39,7 @@ export const sampleHistoricals: FinancialLineItems[] = [
     operatingCashFlow: sourced(240),
     capex: sourced(65),
     deltaNWC: sourced(12),
+    cashLikeInvestments: null,
   },
 ];
 
@@ -80,6 +82,7 @@ export const flatHistoricals: FinancialLineItems[] = [
     operatingCashFlow: sourced(280),
     capex: sourced(50),
     deltaNWC: sourced(0),
+    cashLikeInvestments: null,
   },
 ];
 

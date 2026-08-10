@@ -2,9 +2,14 @@
 
 import { Badge } from "@/components/ui/badge";
 import { useValuationWorkspace } from "@/lib/featured/ValuationWorkspaceContext";
-import { formatCompactCurrency } from "@/lib/format";
+import { formatCompactCurrency, formatCurrency, formatPercent } from "@/lib/format";
 import { Reveal } from "@/components/valuation/reveal";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
+
+const localTimeFormatter = new Intl.DateTimeFormat(undefined, {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
 
 export function OverviewTab() {
   const { record, modelState } = useValuationWorkspace();
@@ -12,6 +17,12 @@ export function OverviewTab() {
   const metrics = modelState?.historicalMetrics ?? [];
   const latest = metrics[metrics.length - 1];
   const latestHistorical = financials.historicals[financials.historicals.length - 1];
+
+  const currentPrice = financials.currentPrice;
+  const dilutedShares = latestHistorical.dilutedShares.value;
+  const marketCap = currentPrice ? currentPrice.value * dilutedShares : null;
+  const fairValue = modelState?.dcf.impliedSharePrice ?? null;
+  const upsideDownside = currentPrice && fairValue !== null ? (fairValue - currentPrice.value) / currentPrice.value : null;
 
   const sparklineData = financials.historicals.map((h) => ({
     year: h.fiscalYear,
@@ -73,13 +84,37 @@ export function OverviewTab() {
                 <dd className="tabular-nums">{latest ? formatCompactCurrency(latest.ebitda) : "—"}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-border pt-3">
-                <dt className="text-muted-foreground">Current price</dt>
-                <dd className="text-xs text-muted-foreground">Unavailable</dd>
+                <dt className="text-muted-foreground">Latest available price</dt>
+                {currentPrice ? (
+                  <dd className="tabular-nums" title={`${currentPrice.source} — as of ${localTimeFormatter.format(new Date(currentPrice.asOf))}`}>
+                    {formatCurrency(currentPrice.value)}
+                  </dd>
+                ) : (
+                  <dd className="text-xs text-muted-foreground">Unavailable</dd>
+                )}
               </div>
               <div className="flex items-center justify-between">
                 <dt className="text-muted-foreground">Market cap</dt>
-                <dd className="text-xs text-muted-foreground">Unavailable (needs price)</dd>
+                <dd className="tabular-nums">{marketCap !== null ? formatCompactCurrency(marketCap) : <span className="text-xs text-muted-foreground">Unavailable (needs price)</span>}</dd>
               </div>
+              {currentPrice && fairValue !== null && upsideDownside !== null ? (
+                <>
+                  <div className="flex items-center justify-between border-t border-border pt-3">
+                    <dt className="text-muted-foreground">DCF fair value (Base)</dt>
+                    <dd className="tabular-nums">{formatCurrency(fairValue)}</dd>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <dt className="text-muted-foreground">Implied upside / downside</dt>
+                    <dd className={upsideDownside >= 0 ? "tabular-nums text-chart-5" : "tabular-nums text-chart-4"}>
+                      {upsideDownside >= 0 ? "+" : ""}
+                      {formatPercent(upsideDownside)}
+                    </dd>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {currentPrice.source} &middot; as of {localTimeFormatter.format(new Date(currentPrice.asOf))}
+                  </p>
+                </>
+              ) : null}
             </dl>
           </div>
         </div>

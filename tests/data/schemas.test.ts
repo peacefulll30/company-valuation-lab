@@ -32,6 +32,7 @@ describe("schema compatibility with lib/engine/types.ts", () => {
       operatingCashFlow: { value: 22, source: "s", asOf: "2024-01-01" },
       capex: { value: 6, source: "s", asOf: "2024-01-01" },
       deltaNWC: { value: 1, source: "s", asOf: "2024-01-01" },
+      cashLikeInvestments: null,
     });
     const asEngineType: FinancialLineItems = parsed;
     expect(asEngineType.fiscalYear).toBe(2024);
@@ -91,6 +92,7 @@ describe("schema validation rejects missing/invalid required data (never default
       operatingCashFlow: { value: 22, source: "s", asOf: "2024-01-01" },
       capex: { value: 6, source: "s", asOf: "2024-01-01" },
       deltaNWC: { value: 1, source: "s", asOf: "2024-01-01" },
+      cashLikeInvestments: null,
     });
     expect(result.success).toBe(false);
   });
@@ -109,6 +111,7 @@ describe("schema validation rejects missing/invalid required data (never default
       operatingCashFlow: { value: 22, source: "s", asOf: "2024-01-01" },
       capex: { value: 6, source: "s", asOf: "2024-01-01" },
       deltaNWC: { value: 1, source: "s", asOf: "2024-01-01" },
+      cashLikeInvestments: null,
     };
     delete full.revenue;
     const result = financialLineItemsSchema.safeParse(full);

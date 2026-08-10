@@ -21,6 +21,10 @@ export const financialLineItemsSchema = z.object({
   operatingCashFlow: sourcedNumberSchema,
   capex: sourcedNumberSchema,
   deltaNWC: sourcedNumberSchema,
+  // Optional by design — see `FinancialLineItems.cashLikeInvestments` in
+  // `/lib/engine/types.ts`. Every other field here is required; this is the
+  // one deliberate exception.
+  cashLikeInvestments: sourcedNumberSchema.nullable(),
 });
 
 /** Mirrors `lib/engine/types.ts::CompanyFinancials` exactly. */

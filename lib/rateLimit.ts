@@ -80,6 +80,16 @@ export function getAnalystRateLimiter(): RateLimiter | null {
   return analystLimiter;
 }
 
+let marketLimiter: RateLimiter | null | undefined;
+
+/** Market-price refresh limiter: generous per-IP allowance for a manual Refresh click — the real protection against exhausting Twelve Data's daily budget is `fetchQuote`'s own 15-minute cache, shared across every visitor. */
+export function getMarketRateLimiter(): RateLimiter | null {
+  if (marketLimiter === undefined) {
+    marketLimiter = buildLimiter(20, "60 s", "ratelimit:market");
+  }
+  return marketLimiter;
+}
+
 /**
  * Best-effort per-client identifier for IP-based limiting. Reads the
  * standard proxy headers (what Vercel and most reverse proxies set); falls

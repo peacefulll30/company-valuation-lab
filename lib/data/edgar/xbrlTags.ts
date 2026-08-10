@@ -86,3 +86,25 @@ export const SHORT_TERM_BORROWINGS_TAGS = ["ShortTermBorrowings"];
 /** Used only to derive ΔNWC via balance-sheet differencing (see mapToFinancials.ts). */
 export const CURRENT_ASSETS_TAGS = ["AssetsCurrent"];
 export const CURRENT_LIABILITIES_TAGS = ["LiabilitiesCurrent"];
+
+/**
+ * Marketable securities / cash-like investments — genuinely optional
+ * (`mapToFinancials.ts` never fails a year for missing these, unlike every
+ * other instant concept above). No single tag covers every filer:
+ * calibrated against live SEC EDGAR data for the 10 Featured tickers.
+ * `MarketableSecuritiesCurrent`/`Noncurrent` is what AAPL/AMZN/KO/NVDA use;
+ * `ShortTermInvestments`/`LongTermInvestments` is what CAT/COST/MCD/MSFT
+ * use; `AvailableForSaleSecuritiesCurrent` is HD's. A filer using none of
+ * these (confirmed live for WMT) legitimately has no reliably-mappable
+ * cash-like investments figure — not a mapping gap to keep chasing.
+ */
+export const CASH_LIKE_INVESTMENTS_CURRENT_TAGS = [
+  "MarketableSecuritiesCurrent",
+  "ShortTermInvestments",
+  "AvailableForSaleSecuritiesCurrent",
+];
+export const CASH_LIKE_INVESTMENTS_NONCURRENT_TAGS = [
+  "MarketableSecuritiesNoncurrent",
+  "LongTermInvestments",
+  "AvailableForSaleSecuritiesNoncurrent",
+];

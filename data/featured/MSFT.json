@@ -67,6 +67,11 @@
           "value": -18105000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2022-06-30"
+        },
+        "cashLikeInvestments": {
+          "value": 97717000000,
+          "source": "SEC EDGAR 10-K (ShortTermInvestments + LongTermInvestments composite)",
+          "asOf": "2022-06-30"
         }
       },
       {
@@ -124,6 +129,11 @@
         "deltaNWC": {
           "value": -12769000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2023-06-30"
+        },
+        "cashLikeInvestments": {
+          "value": 86437000000,
+          "source": "SEC EDGAR 10-K (ShortTermInvestments + LongTermInvestments composite)",
           "asOf": "2023-06-30"
         }
       },
@@ -183,6 +193,11 @@
           "value": -25576000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2024-06-30"
+        },
+        "cashLikeInvestments": {
+          "value": 71828000000,
+          "source": "SEC EDGAR 10-K (ShortTermInvestments + LongTermInvestments composite)",
+          "asOf": "2024-06-30"
         }
       },
       {
@@ -241,6 +256,11 @@
           "value": -2405000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2025-06-30"
+        },
+        "cashLikeInvestments": {
+          "value": 79728000000,
+          "source": "SEC EDGAR 10-K (ShortTermInvestments + LongTermInvestments composite)",
+          "asOf": "2025-06-30"
         }
       },
       {
@@ -298,6 +318,11 @@
         "deltaNWC": {
           "value": 4507000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2026-06-30"
+        },
+        "cashLikeInvestments": {
+          "value": 92256000000,
+          "source": "SEC EDGAR 10-K (ShortTermInvestments + LongTermInvestments composite)",
           "asOf": "2026-06-30"
         }
       }
@@ -799,7 +824,52 @@
       "accessionNumber": "0001193125-26-323660",
       "filingDate": "2026-07-29",
       "periodEnd": "2026-06-30"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2022,
+      "tag": "ShortTermInvestments + LongTermInvestments",
+      "form": "10-K",
+      "accessionNumber": "0000950170-23-035122",
+      "filingDate": "2023-07-27",
+      "periodEnd": "2022-06-30"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2023,
+      "tag": "ShortTermInvestments + LongTermInvestments",
+      "form": "10-K",
+      "accessionNumber": "0000950170-24-087843",
+      "filingDate": "2024-07-30",
+      "periodEnd": "2023-06-30"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2024,
+      "tag": "ShortTermInvestments + LongTermInvestments",
+      "form": "10-K",
+      "accessionNumber": "0000950170-25-100235",
+      "filingDate": "2025-07-30",
+      "periodEnd": "2024-06-30"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2025,
+      "tag": "ShortTermInvestments + LongTermInvestments",
+      "form": "10-K",
+      "accessionNumber": "0001193125-26-323660",
+      "filingDate": "2026-07-29",
+      "periodEnd": "2025-06-30"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2026,
+      "tag": "ShortTermInvestments + LongTermInvestments",
+      "form": "10-K",
+      "accessionNumber": "0001193125-26-323660",
+      "filingDate": "2026-07-29",
+      "periodEnd": "2026-06-30"
     }
   ],
-  "generatedAt": "2026-08-08T21:00:55.951Z"
+  "generatedAt": "2026-08-09T23:30:00.000Z"
 }

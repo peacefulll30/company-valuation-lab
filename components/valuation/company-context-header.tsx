@@ -1,20 +1,25 @@
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/brand/container";
+import { PricePanel } from "@/components/valuation/market/price-panel";
+import type { MarketQuote, MarketQuoteResult } from "@/lib/market/types";
 
 type CompanyContextHeaderProps = {
   companySlug: string;
   /** Real resolved data — omit to render the honest "not yet resolved" placeholder (e.g. Phase 1 shell). */
   data?: { ticker: string; name: string; tier: "featured" | "searched" };
+  initialQuote?: MarketQuoteResult;
+  /** Forwarded to `PricePanel` — lets a successful refresh feed AUTO WACC without this presentational component knowing anything about WACC itself. */
+  onQuoteChange?: (quote: MarketQuote) => void;
 };
 
 /**
  * Persistent company context header (Design spec §3): ticker, name, tier
- * badge, price + as-of — visible from every workspace tab. Current price
- * stays honestly "unavailable" even for resolved companies — no clean,
- * stable, keyless price source was available this phase (CLAUDE.md — never
- * fabricate a sourced value; price is not required for the DCF math).
+ * badge, price + as-of — visible from every workspace tab. `PricePanel`
+ * renders "Price unavailable" honestly (never a fabricated value) whenever
+ * `initialQuote` isn't a successful result — e.g. no market-data key is
+ * configured for this deployment.
  */
-export function CompanyContextHeader({ companySlug, data }: CompanyContextHeaderProps) {
+export function CompanyContextHeader({ companySlug, data, initialQuote, onQuoteChange }: CompanyContextHeaderProps) {
   return (
     <div className="border-b border-border bg-card">
       <Container className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-3">
@@ -35,7 +40,11 @@ export function CompanyContextHeader({ companySlug, data }: CompanyContextHeader
             </Badge>
           )}
         </div>
-        <p className="text-xs text-muted-foreground">Price unavailable</p>
+        {data && initialQuote ? (
+          <PricePanel ticker={data.ticker} initial={initialQuote} onQuoteChange={onQuoteChange} />
+        ) : (
+          <p className="text-xs text-muted-foreground">Price unavailable</p>
+        )}
       </Container>
     </div>
   );

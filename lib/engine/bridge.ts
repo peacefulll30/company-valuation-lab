@@ -1,8 +1,19 @@
 import { assertValidDilutedShares } from "./validate";
 
-/** Locked invariant: `Net Debt = Total Debt − Cash` — may be negative (net-cash position). */
-export function computeNetDebt(totalDebt: number, cash: number): number {
-  return totalDebt - cash;
+/**
+ * `Net Debt = Total Debt − Cash − Eligible Cash-like Investments` — may be
+ * negative (net-cash position). Extended (explicit user sign-off) from the
+ * original `Total Debt − Cash` to also net out marketable securities where
+ * SEC XBRL reliably provides them as a distinct, sourced field
+ * (`cashLikeInvestments`) — never silently folded into `cash` itself.
+ * `cashLikeInvestments` defaults to 0 (the original behavior) when a
+ * company's securities can't be reliably mapped, not when they're genuinely
+ * zero — callers pass `0` explicitly only after confirming that
+ * distinction; see `bridgeEnterpriseValueToSharePrice` below for how the
+ * `SourcedValue<number> | null` field feeds this.
+ */
+export function computeNetDebt(totalDebt: number, cash: number, cashLikeInvestments: number = 0): number {
+  return totalDebt - cash - cashLikeInvestments;
 }
 
 /**
@@ -24,15 +35,28 @@ export function computeImpliedSharePrice(equityValue: number, dilutedShares: num
   return equityValue / dilutedShares;
 }
 
-/** The full EV → Equity Value → Implied Share Price bridge, composed from the three steps above. */
+/**
+ * The full EV → Equity Value → Implied Share Price bridge, composed from
+ * the three steps above. `cashLikeInvestments` is `null` when a company's
+ * marketable securities can't be reliably mapped from SEC XBRL — treated
+ * as excluded (contributes 0 to Net Debt), not silently assumed zero
+ * holdings; `cashLikeInvestmentsIncluded` on the result says which
+ * happened, so the UI never has to re-derive it.
+ */
 export function bridgeEnterpriseValueToSharePrice(
   enterpriseValue: number,
   totalDebt: number,
   cash: number,
-  dilutedShares: number
-): { netDebt: number; equityValue: number; impliedSharePrice: number } {
-  const netDebt = computeNetDebt(totalDebt, cash);
+  dilutedShares: number,
+  cashLikeInvestments: number | null = null
+): {
+  netDebt: number;
+  equityValue: number;
+  impliedSharePrice: number;
+  cashLikeInvestmentsIncluded: boolean;
+} {
+  const netDebt = computeNetDebt(totalDebt, cash, cashLikeInvestments ?? 0);
   const equityValue = computeEquityValue(enterpriseValue, netDebt);
   const impliedSharePrice = computeImpliedSharePrice(equityValue, dilutedShares);
-  return { netDebt, equityValue, impliedSharePrice };
+  return { netDebt, equityValue, impliedSharePrice, cashLikeInvestmentsIncluded: cashLikeInvestments !== null };
 }

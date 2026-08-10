@@ -5,10 +5,11 @@ import { formatCompactCurrency, formatPercent } from "@/lib/format";
 import { EvEquityWaterfallChart } from "@/components/charts/ev-equity-waterfall-chart";
 import { ConceptInfo } from "@/components/valuation/concept-info";
 import { Reveal } from "@/components/valuation/reveal";
+import { WaccModeBadge } from "@/components/valuation/wacc-mode-badge";
 import { DIVERGENCE_THRESHOLD } from "@/lib/engine";
 
 export function DcfTab() {
-  const { record, assumptions, waccExplanation, modelState, modelError } = useValuationWorkspace();
+  const { record, assumptions, waccExplanation, waccMode, modelState, modelError } = useValuationWorkspace();
 
   if (modelError || !modelState) {
     return (
@@ -26,6 +27,7 @@ export function DcfTab() {
 
   const { dcf } = modelState;
   const lastHistoricalYear = record.financials.historicals[record.financials.historicals.length - 1].fiscalYear;
+  const latestHistorical = record.financials.historicals[record.financials.historicals.length - 1];
 
   return (
     <div className="flex flex-col gap-8">
@@ -76,12 +78,59 @@ export function DcfTab() {
           </table>
         </div>
 
-        <EvEquityWaterfallChart
-          enterpriseValue={dcf.enterpriseValue}
-          netDebt={dcf.netDebt}
-          equityValue={dcf.equityValue}
-          impliedSharePrice={dcf.impliedSharePrice}
-        />
+        <div>
+          <EvEquityWaterfallChart
+            enterpriseValue={dcf.enterpriseValue}
+            netDebt={dcf.netDebt}
+            equityValue={dcf.equityValue}
+            impliedSharePrice={dcf.impliedSharePrice}
+          />
+
+          <div className="mt-3 rounded-md border border-border bg-card p-4">
+            <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Equity bridge, in full</p>
+            <dl className="mt-2 flex flex-col gap-1 text-sm">
+              <div className="flex items-center justify-between">
+                <dt className="text-muted-foreground">Enterprise Value</dt>
+                <dd className="tabular-nums">{formatCompactCurrency(dcf.enterpriseValue)}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-muted-foreground">&minus; Debt</dt>
+                <dd className="tabular-nums">{formatCompactCurrency(latestHistorical.totalDebt.value)}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-muted-foreground">
+                  + Cash &amp; cash equivalents{" "}
+                  <span className="font-mono text-[11px]">(CashAndCashEquivalentsAtCarryingValue)</span>
+                </dt>
+                <dd className="tabular-nums">{formatCompactCurrency(latestHistorical.cash.value)}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-muted-foreground">+ Eligible cash-like investments (marketable securities)</dt>
+                <dd className="tabular-nums">
+                  {latestHistorical.cashLikeInvestments
+                    ? formatCompactCurrency(latestHistorical.cashLikeInvestments.value)
+                    : "Unavailable — excluded"}
+                </dd>
+              </div>
+              <div className="flex items-center justify-between border-t border-border pt-1.5 font-medium">
+                <dt>= Equity Value</dt>
+                <dd className="tabular-nums">{formatCompactCurrency(dcf.equityValue)}</dd>
+              </div>
+            </dl>
+            <p className="mt-3 text-xs text-muted-foreground">
+              {dcf.cashLikeInvestmentsIncluded ? (
+                <>
+                  Sourced from{" "}
+                  <span className="font-mono">{latestHistorical.cashLikeInvestments?.source}</span> — treated as a
+                  non-operating, cash-like asset because it&rsquo;s the company&rsquo;s treasury/capital-allocation
+                  portfolio, not an asset used to run operations.
+                </>
+              ) : (
+                "SEC XBRL doesn't reliably provide a marketable-securities figure for this company, so it's excluded here — never assumed to be zero."
+              )}
+            </p>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-md border border-border bg-card p-4">
@@ -123,6 +172,19 @@ export function DcfTab() {
             </span>
           </summary>
           <div className="flex flex-col gap-2 border-t border-border bg-accent/30 p-4 text-sm">
+            <div className="mb-1 flex flex-wrap items-center gap-2">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {waccExplanation.method === "weighted" ? "Estimated WACC (Model WACC)" : "Cost of equity, used as a WACC proxy"}
+              </p>
+              <WaccModeBadge waccMode={waccMode} method={waccExplanation.method} />
+            </div>
+            {waccExplanation.method === "weighted" ? (
+              <p className="-mt-1 mb-1 text-xs text-muted-foreground">
+                An estimate built from proxy inputs where a precise figure isn&rsquo;t available — see the labels
+                below. Never a substitute for a sourced, company-specific WACC.
+              </p>
+            ) : null}
+
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Risk-free rate</span>
               <span
@@ -134,8 +196,9 @@ export function DcfTab() {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Beta</span>
-              <span className="tabular-nums" title={waccExplanation.beta.source}>
+              <span className="text-right tabular-nums" title={waccExplanation.beta.source}>
                 {waccExplanation.beta.value.toFixed(2)}
+                <span className="ml-1 text-[11px] text-muted-foreground">(market-average placeholder, not company-specific)</span>
               </span>
             </div>
             <div className="flex items-center justify-between">
@@ -144,16 +207,63 @@ export function DcfTab() {
                 {formatPercent(waccExplanation.equityRiskPremium.value)}
               </span>
             </div>
-            <div className="mt-1 flex items-center justify-between border-t border-border pt-2 font-medium">
-              <span>Cost of equity (used as WACC)</span>
+            <div className="flex items-center justify-between border-t border-border pt-2 font-medium">
+              <span>Cost of equity (CAPM)</span>
               <span className="tabular-nums">{formatPercent(waccExplanation.costOfEquity)}</span>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">
-              A full debt-weighted WACC needs the market value of equity (price × diluted shares); current
-              price is honestly unavailable this phase, so cost of equity is used directly as the WACC
-              proxy. Applied WACC: {formatPercent(assumptions.wacc)}
-              {assumptions.wacc !== waccExplanation.costOfEquity ? " (edited from the default on Forecast)" : ""}.
-            </p>
+
+            {waccExplanation.method === "weighted" ? (
+              <>
+                <div className="mt-2 flex items-center justify-between border-t border-border pt-2">
+                  <span className="text-muted-foreground">
+                    Pre-tax cost of debt <span className="text-[11px]">(spread-based proxy)</span>
+                  </span>
+                  <span className="tabular-nums" title={waccExplanation.preTaxCostOfDebt?.source}>
+                    {formatPercent(waccExplanation.preTaxCostOfDebt?.value ?? 0)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">After-tax cost of debt</span>
+                  <span className="tabular-nums">{formatPercent(waccExplanation.afterTaxCostOfDebt ?? 0)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">
+                    Market value of equity <span className="text-[11px]">(live price × diluted shares)</span>
+                  </span>
+                  <span className="tabular-nums">{formatCompactCurrency(waccExplanation.marketValueEquity ?? 0)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">
+                    Market value of debt <span className="text-[11px]">(book-value proxy)</span>
+                  </span>
+                  <span className="tabular-nums" title="No market-priced bond yield is sourced for this company's debt">
+                    {formatCompactCurrency(waccExplanation.marketValueDebt ?? 0)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Capital structure weights (E / D)</span>
+                  <span className="tabular-nums">
+                    {formatPercent(waccExplanation.weightEquity ?? 0)} / {formatPercent(waccExplanation.weightDebt ?? 0)}
+                  </span>
+                </div>
+                <div className="mt-1 flex items-center justify-between border-t border-border pt-2 font-medium">
+                  <span>WACC = E/(D+E)×Re + D/(D+E)×Rd×(1&minus;T)</span>
+                  <span className="tabular-nums">{formatPercent(assumptions.wacc)}</span>
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  An estimate weighted using today&rsquo;s market value of equity (live price × diluted shares),
+                  the book value of total debt as a proxy for its market value, and a spread-based proxy for the
+                  cost of debt — not a sourced company bond yield.
+                </p>
+              </>
+            ) : (
+              <p className="mt-2 text-xs text-muted-foreground">
+                A weighted WACC needs the market value of equity (price × diluted shares) — the current price is
+                unavailable, so cost of equity is used directly as the WACC proxy. Applied WACC:{" "}
+                {formatPercent(assumptions.wacc)}
+                {waccMode === "manual" ? " (edited from the default on Forecast)" : ""}.
+              </p>
+            )}
           </div>
         </details>
       </Reveal>

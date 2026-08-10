@@ -67,7 +67,8 @@
           "value": 5363000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2021-12-31"
-        }
+        },
+        "cashLikeInvestments": null
       },
       {
         "fiscalYear": 2022,
@@ -125,7 +126,8 @@
           "value": 1449000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2022-12-31"
-        }
+        },
+        "cashLikeInvestments": null
       },
       {
         "fiscalYear": 2023,
@@ -183,7 +185,8 @@
           "value": -1321000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2023-12-31"
-        }
+        },
+        "cashLikeInvestments": null
       },
       {
         "fiscalYear": 2024,
@@ -241,7 +244,8 @@
           "value": 1028000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2024-12-31"
-        }
+        },
+        "cashLikeInvestments": null
       },
       {
         "fiscalYear": 2025,
@@ -299,7 +303,8 @@
           "value": 547000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2025-12-31"
-        }
+        },
+        "cashLikeInvestments": null
       }
     ],
     "currentPrice": null
@@ -801,5 +806,5 @@
       "periodEnd": "2025-12-31"
     }
   ],
-  "generatedAt": "2026-08-08T21:00:58.861Z"
+  "generatedAt": "2026-08-09T23:30:00.000Z"
 }

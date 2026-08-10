@@ -65,6 +65,7 @@ describe("deriveHistoricalMetrics", () => {
         operatingCashFlow: sourced(-100),
         capex: sourced(20),
         deltaNWC: sourced(0),
+        cashLikeInvestments: null,
       },
     ]);
     expect(negativeYear.ebitda).toBeCloseTo(-250, 10); // -300 + 50, not clamped to 0
@@ -86,6 +87,7 @@ describe("deriveHistoricalMetrics", () => {
         operatingCashFlow: sourced(0),
         capex: sourced(0),
         deltaNWC: sourced(0),
+        cashLikeInvestments: null,
       },
     ]);
     expect(zeroRevenueYear.ebitdaMargin).toBeNull();

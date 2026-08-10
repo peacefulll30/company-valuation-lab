@@ -46,6 +46,8 @@ export type DCFResult = {
   netDebt: number;
   equityValue: number;
   impliedSharePrice: number;
+  /** True when `cashLikeInvestments` (marketable securities) were reliably mapped and netted into `netDebt`; false means excluded, not assumed zero. */
+  cashLikeInvestmentsIncluded: boolean;
 };
 
 export type ScenarioResult = {

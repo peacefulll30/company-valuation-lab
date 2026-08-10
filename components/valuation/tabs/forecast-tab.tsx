@@ -2,6 +2,7 @@
 
 import { useValuationWorkspace } from "@/lib/featured/ValuationWorkspaceContext";
 import { AssumptionInput } from "@/components/valuation/assumption-input";
+import { WaccModeBadge } from "@/components/valuation/wacc-mode-badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HistoricalVsForecastChart } from "@/components/charts/historical-vs-forecast-chart";
@@ -11,8 +12,19 @@ import { FORECAST_YEARS } from "@/lib/engine";
 import { formatPercent } from "@/lib/format";
 
 export function ForecastTab() {
-  const { record, assumptions, setAssumptions, resetAssumptions, isDefault, waccExplanation, modelState, modelError } =
-    useValuationWorkspace();
+  const {
+    record,
+    assumptions,
+    setAssumptions,
+    resetAssumptions,
+    isDefault,
+    waccExplanation,
+    waccMode,
+    setManualWacc,
+    taxRateExplanation,
+    modelState,
+    modelError,
+  } = useValuationWorkspace();
 
   const historicalPoints = record.financials.historicals.map((h) => ({
     year: h.fiscalYear,
@@ -79,16 +91,23 @@ export function ForecastTab() {
             onChange={(v) => setAssumptions((prev) => ({ ...prev, taxRate: v }))}
             min={0}
             max={0.5}
-            sourceTag={`Default: ${record.meta.ticker}'s most recent effective tax rate`}
+            sourceTag={`Default: median of the last ${taxRateExplanation.yearsUsed} years' effective tax rate, normalized — robust to a one-off year, not the single most recent rate projected forever (that was ${formatPercent(taxRateExplanation.latestEffective.value)} in FY${record.financials.historicals[record.financials.historicals.length - 1].fiscalYear}). Edit freely.`}
           />
           <AssumptionInput
             label="WACC"
             value={assumptions.wacc}
-            onChange={(v) => setAssumptions((prev) => ({ ...prev, wacc: v }))}
+            onChange={(v) => setManualWacc(v)}
             min={0.02}
             max={0.2}
-            sourceTag={`Default: cost of equity proxy — risk-free ${formatPercent(waccExplanation.riskFreeRate.value)} (${waccExplanation.riskFreeRate.source}, ${waccExplanation.riskFreeRate.asOf}) + beta ${waccExplanation.beta.value.toFixed(1)} × ERP ${formatPercent(waccExplanation.equityRiskPremium.value)}`}
+            sourceTag={
+              waccMode === "manual"
+                ? "Your own assumption — a market price refresh will not overwrite this. Reset to defaults to return to AUTO."
+                : waccExplanation.method === "weighted"
+                  ? `Default: Estimated WACC — E/(D+E)×cost of equity + D/(D+E)×after-tax cost of debt, using today's market value of equity (live price × diluted shares) and proxy inputs for debt — see the Advanced ledger on DCF for exactly which. Recomputes automatically on price refresh.`
+                  : `Default: cost of equity proxy — risk-free ${formatPercent(waccExplanation.riskFreeRate.value)} (${waccExplanation.riskFreeRate.source}, ${waccExplanation.riskFreeRate.asOf}) + beta ${waccExplanation.beta.value.toFixed(1)} × ERP ${formatPercent(waccExplanation.equityRiskPremium.value)} — a live price is needed to weight in debt; see the Advanced ledger on DCF`
+            }
             concept="wacc"
+            badge={<WaccModeBadge waccMode={waccMode} method={waccExplanation.method} />}
           />
           <AssumptionInput
             label="Terminal growth"
@@ -109,6 +128,11 @@ export function ForecastTab() {
               </span>
             </summary>
             <div className="flex flex-col gap-4 border-t border-border bg-accent/30 p-4">
+              <p className="text-xs text-muted-foreground">
+                Each driver below feeds straight into UFCF (see the DCF tab&rsquo;s bridge table): D&amp;A is added
+                back to NOPAT, CapEx and ΔNWC are subtracted — <span className="font-mono">UFCF = NOPAT + D&amp;A
+                &minus; CapEx &minus; ΔNWC</span>.
+              </p>
               <label className="flex flex-col gap-1 text-sm">
                 <span className="font-medium">D&amp;A (% of revenue)</span>
                 <Input
@@ -144,6 +168,27 @@ export function ForecastTab() {
                   }}
                   className="h-8 w-32 text-sm tabular-nums"
                 />
+              </label>
+              <label className="flex flex-col gap-1 text-sm">
+                <span className="font-medium">Net working capital (% of revenue)</span>
+                <Input
+                  type="number"
+                  step={0.1}
+                  inputMode="decimal"
+                  value={assumptions.advanced?.nwcPctRevenue !== undefined ? (assumptions.advanced.nwcPctRevenue * 100).toFixed(1) : ""}
+                  placeholder="Default: 5-year historical average of ΔNWC/revenue"
+                  onChange={(e) => {
+                    const v = Number.parseFloat(e.target.value);
+                    setAssumptions((prev) => ({
+                      ...prev,
+                      advanced: { ...prev.advanced, nwcPctRevenue: Number.isFinite(v) ? v / 100 : undefined },
+                    }));
+                  }}
+                  className="h-8 w-32 text-sm tabular-nums"
+                />
+                <span className="text-xs text-muted-foreground">
+                  Modeled as a working-capital level; ΔNWC each forecast year is the change in that level.
+                </span>
               </label>
               <label className="flex items-center gap-2 text-sm">
                 <input

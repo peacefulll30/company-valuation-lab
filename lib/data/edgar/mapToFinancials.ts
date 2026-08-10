@@ -6,6 +6,8 @@ import {
 } from "./selectFacts";
 import {
   CAPEX_TAGS,
+  CASH_LIKE_INVESTMENTS_CURRENT_TAGS,
+  CASH_LIKE_INVESTMENTS_NONCURRENT_TAGS,
   CASH_TAGS,
   COMMERCIAL_PAPER_TAGS,
   CURRENT_ASSETS_TAGS,
@@ -150,6 +152,8 @@ export function mapToFinancials(companyFacts: CompanyFactsResponse, yearsWanted:
   const daAmortization = resolveAnnual(usGaap, [DA_COMPONENT_TAGS[1]], wantedEnds);
 
   const cash = resolveInstant(usGaap, CASH_TAGS, balanceSheetEnds);
+  const cashLikeCurrent = resolveInstant(usGaap, CASH_LIKE_INVESTMENTS_CURRENT_TAGS, wantedEnds);
+  const cashLikeNoncurrent = resolveInstant(usGaap, CASH_LIKE_INVESTMENTS_NONCURRENT_TAGS, wantedEnds);
   const ltDebtNoncurrent = resolveInstant(usGaap, LONG_TERM_DEBT_NONCURRENT_TAGS, wantedEnds);
   const ltDebtCurrent = resolveInstant(usGaap, LONG_TERM_DEBT_CURRENT_TAGS, wantedEnds);
   const commercialPaper = resolveInstant(usGaap, COMMERCIAL_PAPER_TAGS, wantedEnds);
@@ -265,6 +269,31 @@ export function mapToFinancials(companyFacts: CompanyFactsResponse, yearsWanted:
     // Cash (already resolved as part of the balance-sheet endpoint set).
     const cashValue = field("cash", end, cash.get(end));
 
+    // Cash-like investments (marketable securities) — deliberately
+    // non-blocking: a year with no resolvable tag still succeeds, with
+    // this field `null` ("excluded," not fabricated as zero holdings).
+    // Never added to `missingFields`.
+    let cashLikeInvestmentsValue: SourcedValue<number> | null = null;
+    const cashLikeComponents = sumOptionalComponents([cashLikeCurrent, cashLikeNoncurrent], end);
+    if (cashLikeComponents) {
+      const representative = cashLikeComponents.contributing[0];
+      const tags = cashLikeComponents.contributing.map((c) => c.tag).join(" + ");
+      provenance.push({
+        field: "cashLikeInvestments",
+        fiscalYear,
+        tag: tags,
+        form: representative.form,
+        accessionNumber: representative.accessionNumber,
+        filingDate: representative.filingDate,
+        periodEnd: end,
+      });
+      cashLikeInvestmentsValue = {
+        value: cashLikeComponents.total,
+        source: `SEC EDGAR ${representative.form} (${tags}${cashLikeComponents.contributing.length > 1 ? " composite" : ""})`,
+        asOf: end,
+      };
+    }
+
     // Total debt = sum of whichever debt-instrument tags resolve; missing only if none do.
     let totalDebtValue: SourcedValue<number> | null = null;
     const debtComponents = sumOptionalComponents(
@@ -343,6 +372,7 @@ export function mapToFinancials(companyFacts: CompanyFactsResponse, yearsWanted:
         operatingCashFlow: ocfValue,
         capex: capexValue,
         deltaNWC: deltaNWCValue,
+        cashLikeInvestments: cashLikeInvestmentsValue,
       });
     }
   }

@@ -25,6 +25,17 @@ export type FinancialLineItems = {
   operatingCashFlow: SourcedValue<number>;
   capex: SourcedValue<number>;
   deltaNWC: SourcedValue<number>;
+  /**
+   * Marketable securities (current + noncurrent, whichever a filer reports)
+   * treated as a non-operating, cash-like asset in the EV→Equity bridge —
+   * distinct from `cash` (`CashAndCashEquivalentsAtCarryingValue`), never
+   * silently folded into it. `null` when SEC XBRL doesn't reliably provide
+   * this concept for the company (e.g. it genuinely doesn't hold a
+   * material investment portfolio, or no filer-reported tag resolves) —
+   * the bridge then excludes it explicitly rather than treating a missing
+   * value as zero (CLAUDE.md — never default a missing field to 0).
+   */
+  cashLikeInvestments: SourcedValue<number> | null;
 };
 
 export type CompanyFinancials = {

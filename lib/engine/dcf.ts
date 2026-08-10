@@ -34,6 +34,10 @@ export function runDcf(company: CompanyFinancials, assumptions: Assumptions): DC
     "historicals[base].dilutedShares",
     baseYear.dilutedShares
   );
+  // Deliberately not `requireSourcedNumber` — this field is allowed to be
+  // `null` (SEC XBRL doesn't reliably provide it for every filer) and the
+  // bridge treats that as "excluded," never as a fabricated zero.
+  const cashLikeInvestments = baseYear.cashLikeInvestments?.value ?? null;
 
   const midYear = assumptions.advanced?.midYearConvention ?? false;
   const forecastLineItems = generateForecast(company.historicals, assumptions);
@@ -62,11 +66,12 @@ export function runDcf(company: CompanyFinancials, assumptions: Assumptions): DC
 
   const enterpriseValue = presentValueOfUfcf + presentValueOfTerminalValue;
 
-  const { netDebt, equityValue, impliedSharePrice } = bridgeEnterpriseValueToSharePrice(
+  const { netDebt, equityValue, impliedSharePrice, cashLikeInvestmentsIncluded } = bridgeEnterpriseValueToSharePrice(
     enterpriseValue,
     totalDebt,
     cash,
-    dilutedShares
+    dilutedShares,
+    cashLikeInvestments
   );
 
   return {
@@ -76,5 +81,6 @@ export function runDcf(company: CompanyFinancials, assumptions: Assumptions): DC
     netDebt,
     equityValue,
     impliedSharePrice,
+    cashLikeInvestmentsIncluded,
   };
 }

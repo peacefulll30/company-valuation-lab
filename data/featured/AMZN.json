@@ -67,6 +67,11 @@
           "value": 20359000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2021-12-31"
+        },
+        "cashLikeInvestments": {
+          "value": 59829000000,
+          "source": "SEC EDGAR 10-K (MarketableSecuritiesCurrent)",
+          "asOf": "2021-12-31"
         }
       },
       {
@@ -124,6 +129,11 @@
         "deltaNWC": {
           "value": -44076000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2022-12-31"
+        },
+        "cashLikeInvestments": {
+          "value": 16138000000,
+          "source": "SEC EDGAR 10-K (MarketableSecuritiesCurrent)",
           "asOf": "2022-12-31"
         }
       },
@@ -183,6 +193,11 @@
           "value": 2179000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2023-12-31"
+        },
+        "cashLikeInvestments": {
+          "value": 13393000000,
+          "source": "SEC EDGAR 10-K (MarketableSecuritiesCurrent)",
+          "asOf": "2023-12-31"
         }
       },
       {
@@ -241,6 +256,11 @@
           "value": -4863000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
           "asOf": "2024-12-31"
+        },
+        "cashLikeInvestments": {
+          "value": 22423000000,
+          "source": "SEC EDGAR 10-K (MarketableSecuritiesCurrent)",
+          "asOf": "2024-12-31"
         }
       },
       {
@@ -298,6 +318,11 @@
         "deltaNWC": {
           "value": -10354000000,
           "source": "SEC EDGAR 10-K (derived: Δ[(AssetsCurrent − Cash) − (LiabilitiesCurrent − current debt)])",
+          "asOf": "2025-12-31"
+        },
+        "cashLikeInvestments": {
+          "value": 36219000000,
+          "source": "SEC EDGAR 10-K (MarketableSecuritiesCurrent)",
           "asOf": "2025-12-31"
         }
       }
@@ -799,7 +824,52 @@
       "accessionNumber": "0001018724-26-000004",
       "filingDate": "2026-02-06",
       "periodEnd": "2025-12-31"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2021,
+      "tag": "MarketableSecuritiesCurrent",
+      "form": "10-K",
+      "accessionNumber": "0001018724-23-000004",
+      "filingDate": "2023-02-03",
+      "periodEnd": "2021-12-31"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2022,
+      "tag": "MarketableSecuritiesCurrent",
+      "form": "10-K",
+      "accessionNumber": "0001018724-24-000008",
+      "filingDate": "2024-02-02",
+      "periodEnd": "2022-12-31"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2023,
+      "tag": "MarketableSecuritiesCurrent",
+      "form": "10-K",
+      "accessionNumber": "0001018724-25-000004",
+      "filingDate": "2025-02-07",
+      "periodEnd": "2023-12-31"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2024,
+      "tag": "MarketableSecuritiesCurrent",
+      "form": "10-K",
+      "accessionNumber": "0001018724-26-000004",
+      "filingDate": "2026-02-06",
+      "periodEnd": "2024-12-31"
+    },
+    {
+      "field": "cashLikeInvestments",
+      "fiscalYear": 2025,
+      "tag": "MarketableSecuritiesCurrent",
+      "form": "10-K",
+      "accessionNumber": "0001018724-26-000004",
+      "filingDate": "2026-02-06",
+      "periodEnd": "2025-12-31"
     }
   ],
-  "generatedAt": "2026-08-08T21:01:01.454Z"
+  "generatedAt": "2026-08-09T23:30:00.000Z"
 }

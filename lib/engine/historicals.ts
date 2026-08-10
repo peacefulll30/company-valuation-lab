@@ -22,10 +22,15 @@ export function deriveHistoricalMetrics(historicals: FinancialLineItems[]): Hist
     const capex = requireSourcedNumber(`historicals[${index}].capex`, year.capex);
     const totalDebt = requireSourcedNumber(`historicals[${index}].totalDebt`, year.totalDebt);
     const cash = requireSourcedNumber(`historicals[${index}].cash`, year.cash);
+    // Same Net Debt definition as the DCF bridge (`bridge.ts`) — cash-like
+    // investments (marketable securities) net out when reliably mapped,
+    // excluded (not assumed zero) when not, so this tab's ratio and the
+    // DCF tab's bridge never quietly disagree on what "Net Debt" means.
+    const cashLikeInvestments = year.cashLikeInvestments?.value ?? 0;
 
     const ebitda = deriveEbitda(ebit, da);
     const freeCashFlow = operatingCashFlow - capex;
-    const netDebt = totalDebt - cash;
+    const netDebt = totalDebt - cash - cashLikeInvestments;
 
     const priorRevenue =
       index > 0
